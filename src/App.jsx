@@ -64,6 +64,35 @@ function Indicator({ it, value, onPick }) {
 export default function App() {
   // Tabs
   const [tab, setTab] = useState("diagnostico"); // "diagnostico" | "resultados"
+  const [unidad, setUnidad] = useState("");
+
+  const unidades = [
+    "Facultad de Artes",
+    "Facultad de Ciencias Exactas y Naturales",
+    "Facultad de Ciencias Sociales y Humanas",
+    "Facultad de Derecho y Ciencias Políticas",
+    "Instituto de Estudios Políticos",
+    "Facultad de Comunicaciones y Filología",
+    "Escuela de Idiomas",
+    "Instituto de Filosofía",
+    "Facultad de Ciencias Económicas",
+    "Instituto de Estudios Regionales",
+    "Corporación Académica Ambiental",
+    "Facultad de Educación",
+    "Facultad de Ingeniería",
+    "Facultad de Medicina",
+    "Facultad de Odontología",
+    "Facultad de Ciencias Farmacéuticas y Alimentarias",
+    "Escuela de Microbiología",
+    "Facultad de Ciencias Agrarias",
+    "Escuela Interamericana de Bibliotecología",
+    "Dirección de Regionalización",
+    "Facultad de Enfermería",
+    "Facultad Nacional de Salud Pública",
+    "Instituto Universitario de Educación Física y Deporte",
+    "Escuela de Nutrición y Dietética",
+    "Corporación Académica Ciencias Básicas Biomédicas",
+  ];
 
   // Answers = Hoja2!F2:F51 (0/1/2/3)
   const [answers, setAnswers] = useState(() => {
@@ -76,6 +105,13 @@ export default function App() {
     setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
+  const activeItems = useMemo(() => {
+    if (unidad === "Facultad de Artes") {
+      return items.filter((it) => it.obligatorio !== false);
+    }
+    return items;
+  }, [unidad]);
+
   // Stats (derivados)
   const stats = useMemo(() => {
     let c1 = 0,
@@ -83,14 +119,15 @@ export default function App() {
       c3 = 0,
       answered = 0;
 
-    for (const v of Object.values(answers)) {
+    for (const it of activeItems) {
+      const v = answers[it.id] ?? 0;
       if (v > 0) answered++;
       if (v === 1) c1++;
       if (v === 2) c2++;
       if (v === 3) c3++;
     }
 
-    const total = Object.keys(answers).length;
+    const total = activeItems.length;
 
     let nivel = "pendiente";
     if (answered > 0) {
@@ -100,7 +137,7 @@ export default function App() {
     }
 
     return { c1, c2, c3, answered, total, nivel };
-  }, [answers]);
+  }, [answers, activeItems]);
 
   const textoNivel = raw.niveles_texto?.[stats.nivel] ?? "";
 
@@ -108,7 +145,7 @@ export default function App() {
   const tree = useMemo(() => {
     const byEje = new Map();
 
-    for (const it of items) {
+    for (const it of activeItems) {
       const eje = it.eje ?? "Sin eje";
       const obj = it.objetivo ?? "Sin objetivo";
 
@@ -120,7 +157,7 @@ export default function App() {
     }
 
     return byEje;
-  }, []);
+  }, [activeItems]);
 
   // Función para descargar PDF usando html2pdf
   const downloadPdf = async () => {
@@ -149,13 +186,13 @@ export default function App() {
   const TabButton = ({ id, children }) => (
     <button
       onClick={() => setTab(id)}
-      disabled={tab === id}
+      disabled={tab === id || !unidad}
       style={{
         padding: "8px 12px",
         borderRadius: 10,
         border: "1px solid #ddd",
-        cursor: tab === id ? "default" : "pointer",
-        opacity: tab === id ? 0.7 : 1,
+        cursor: tab === id || !unidad ? "default" : "pointer",
+        opacity: tab === id || !unidad ? 0.7 : 1,
       }}
     >
       {children}
@@ -165,6 +202,37 @@ export default function App() {
   return (
     <div style={{ padding: 16, maxWidth: 1100, margin: "0 auto" }}>
       <h1 style={{ marginTop: 0 }}>Diagnóstico de Internacionalización</h1>
+
+      {/* Selector de unidad académica */}
+      <div
+        style={{
+          marginBottom: 14,
+          padding: 12,
+          border: "1px solid #eee",
+          borderRadius: 12,
+        }}
+      >
+        <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>
+          Unidad académica
+        </label>
+        <select
+          value={unidad}
+          onChange={(e) => setUnidad(e.target.value)}
+          style={{
+            padding: "8px 10px",
+            borderRadius: 8,
+            border: "1px solid #ddd",
+            minWidth: 320,
+          }}
+        >
+          <option value="">Unidad Académica UdeA</option>
+          {unidades.map((u) => (
+            <option key={u} value={u}>
+              {u}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Tabs */}
       <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
@@ -185,8 +253,36 @@ export default function App() {
         · (Básica {stats.c1} / Transversal {stats.c2} / Sistema {stats.c3})
       </div>
 
+      {unidad === "Facultad de Artes" && (
+        <div
+          style={{
+            marginBottom: 14,
+            padding: 12,
+            border: "1px solid #eee",
+            borderRadius: 12,
+          }}
+        >
+          Para la Facultad de Artes, los indicadores no obligatorios no se
+          incluyen en el diagnóstico ni en los resultados.
+        </div>
+      )}
+
+      {!unidad && (
+        <div
+          style={{
+            padding: 12,
+            border: "1px dashed #ddd",
+            borderRadius: 12,
+            marginBottom: 14,
+            background: "#fafafa",
+          }}
+        >
+          Selecciona una unidad académica para habilitar el diagnóstico.
+        </div>
+      )}
+
       {/* TAB: Diagnóstico (acordeón por eje) */}
-      {tab === "diagnostico" && (
+      {tab === "diagnostico" && unidad && (
         <div>
           {Array.from(tree.entries()).map(([eje, byObj]) => (
             <details
@@ -228,7 +324,7 @@ export default function App() {
       )}
 
       {/* TAB: Resultados (radares + texto + pdf) */}
-      {tab === "resultados" && (
+      {tab === "resultados" && unidad && (
         <div>
           {/* TODO lo que quieras en el PDF debe vivir dentro de #pdf */}
           <div id="pdf" style={{ background: "white", padding: 16 }}>
@@ -266,10 +362,13 @@ export default function App() {
             >
               {Array.from(tree.entries()).map(([eje, byObj]) => {
                 const indicators = Array.from(byObj.values()).flat();
+                const radarKey = `radar-${eje}-${unidad}-${indicators
+                  .map((it) => it.id)
+                  .join("-")}`;
                 return (
                   <div key={`wrap-${eje}`} style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
                     <RadarEje
-                      key={`radar-${eje}`}
+                      key={radarKey}
                       titulo={eje}
                       indicators={indicators}
                       answers={answers}
