@@ -1,0 +1,660 @@
+{
+  "niveles_texto": {
+    "basica": "La unidad académica gestiona actividades de internacionalización básica y tal vez incipiente, porque la experiencia en internacionalización es mínima y la comunidad de profesores, estudiantes y personal administrativo debe prepararse para cambios de paradigmas. Se centra en la gestión de indicadores tradicionales de internacionalización (movilidad, convenios, otras lenguas) en un nivel inicial.",
+    "transversal": "La unidad académica ha superado el nivel básico centrado en la movilidad. Avanza hacia una visión internacional, interdisciplinaria e intercultural y de interacción internacional. La internacionalización es transversal a las labores sustantivas.",
+    "sistema": "La unidad académica concibe la internacionalización como un sistema complejo e interrelacionado sobre el que se fundamenta su crecimiento y su desarrollo estratégico con el propósito de posicionarse e insertarse en la dinámica internacional.",
+    "pendiente": "Recuerde evaluar cada uno de los indicadores para obtener el resultado del diagnóstico"
+  },
+  "items": [
+    {
+      "row": 8,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Implementación de lineamientos de políticas para la interacción.",
+      "indicador": "1- Logros de los lineamientos de las políticas de interacción ",
+      "formula": "Definición de agenda estratégica de internacionalización de la unidad académica a la luz de la apuesta institucional plasmada en el respectivo Plan de Acción.",
+      "nombre": "Mapa de socios estratégicos",
+      "niveles": {
+        "basica": "No se cuenta con un mapa de socios estratégicos de la unidad académica definido y actualizado permanentemente",
+        "transversal": "1 mapa de socios estratégicos de la unidad académica definido y actualizado permanentemente",
+        "sistema": "1 agenda de relacionamiento estratégico de la unidad académica, a partir del mapa, gestionada y con resultados"
+      }
+    },
+    {
+      "row": 9,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Implementación de lineamientos de políticas para la interacción.",
+      "indicador": "1- Logros de los lineamientos de las políticas de interacción",
+      "formula": "Cantidad de informes integrados de gestión, resultados e impactos en la unidad académica, de los lineamientos de internacionalización institucional.",
+      "nombre": "Informe integrado",
+      "niveles": {
+        "basica": "1 Informe integrado de la gestión en la unidad académica, de los lineamientos de internacionalización institucional: interacción,  redes, constitución de comunidades académicas y su interacción, convenios, alianzas/año",
+        "transversal": "1 Informe integrado de la gestión y los resultados en la unidad académica, de los lineamientos de internacionalización institucional: interacción,  redes, constitución de comunidades académicas y su interacción, convenios, alianzas/año",
+        "sistema": "1 Informe integrado de la gestión, resultados e impactos en la unidad académica, de los lineamientos de internacionalización institucional: interacción,  redes, constitución de comunidades académicas y su interacción, convenios, alianzas/año"
+      }
+    },
+    {
+      "row": 10,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Creación de redes académicas, de aprendizaje, de investigación y de extensión.",
+      "indicador": "2- Creación de redes",
+      "formula": "Cantidad de redes académicas, de aprendizaje, de investigación y de extensión activos a nivel nacional e internacional, creadas o lideradas por la unidad académica. ",
+      "nombre": "Liderazgo de una red",
+      "niveles": {
+        "basica": "La unidad académica no tiene el liderazgo y no ha creado una red académica, de aprendizaje, investigación o extensión a nivel nacional o internacional",
+        "transversal": "La unidad académica está en proceso de crear una red académica, de aprendizaje, de investigación o de extensión a nivel nacional o internacional",
+        "sistema": "1 red académica, de aprendizaje, de investigación o de extensión a nivel nacional e internacional activo a nivel nacional o internacional creada/liderada por la unidad académica"
+      }
+    },
+    {
+      "row": 11,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Participación en redes académicas, científicas, técnicas, tecnológicas, de cultura y de aprendizaje.",
+      "indicador": "3- Participación en redes",
+      "formula": "Cantidad de estudiantes de la unidad académica participando en redes académicas a nivel nacional e internacional/ Total de estudiantes matriculados en la unidad académica*100  ",
+      "nombre": "Estudiantes participantes en una red",
+      "niveles": {
+        "basica": "Ningún estudiante de la unidad académica participa en redes académicas a nivel nacional e internacional ",
+        "transversal": "0,1-0,5% estudiantes de la unidad académica participa en redes académicas a nivel nacional e internacional al año",
+        "sistema": "0,6-1% estudiantes de la unidad académica participa en redes académicas a nivel nacional e internacional al año"
+      }
+    },
+    {
+      "row": 12,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Participación en redes académicas, científicas, técnicas, tecnológicas, de cultura y de aprendizaje.",
+      "indicador": "3- Participación en redes",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica participando en redes académicas a nivel nacional e internacional/ Total de profesores vinculados y ocasionales de la unidad académica*100",
+      "nombre": "Profesores participantes en una red",
+      "niveles": {
+        "basica": "0-10% de los profesores vinculados y ocasionales de la unidad académica participa activamente en al menos una red académica, científica, técnica, tecnológica, de cultura o de aprendizaje, a nivel nacional o internacional",
+        "transversal": "11-30% de los profesores vinculados y ocasionales de la unidad académica participa activamente en al menos una red académica, científica, técnica, tecnológica, de cultura o de aprendizaje, a nivel nacional o internacional",
+        "sistema": "31-50% de los profesores vinculados y ocasionales de la unidad académica participa activamente en al menos una red académica, científica, técnica, tecnológica, de cultura o de aprendizaje, a nivel nacional o internacional"
+      }
+    },
+    {
+      "row": 13,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Gestión de convenios.",
+      "indicador": "4- Convenios activos",
+      "formula": "Cantidad de convenios nacionales e internacionales activos con productos y resultados en la unidad académica/ cantidad total de convenios vigentes para la unidad académica*100",
+      "nombre": "Convenios con productos y resultados",
+      "niveles": {
+        "basica": "100% de los convenios nacionales e internacionales vigentes para la unidad académica están activos con productos y resultados",
+        "transversal": "100% de los convenios nacionales e internacionales  vigentes para la unidad académica están activos con productos y resultados en las 3 labores sustantivas",
+        "sistema": "100% de los convenios nacionales e internacionales vigentes para la unidad académica responden a una agenda estratégica de relacionamiento y están activos con productos y resultados en las 3 labores sustantivas"
+      }
+    },
+    {
+      "row": 14,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Interacción de la comunidad académica.",
+      "indicador": "5- Interacción global",
+      "formula": "Cantidad de espacios de relacionamiento estratégico en los que participa la unidad académica, bien sea que hayan sido organizados por ésta o que sean ofrecidos por la Universidad/ año",
+      "nombre": "Participación en espacios de interacción",
+      "niveles": {
+        "basica": "1 espacio anual en el que se participa",
+        "transversal": "Entre 2- 3 espacios anuales en los que se participa",
+        "sistema": "Más de 4 espacios anuales en los que se participa"
+      }
+    },
+    {
+      "row": 15,
+      "eje": "Interacción Estratégica",
+      "objetivo": "Interacción con egresados en el exterior.",
+      "indicador": "6- Egresados en el exterior",
+      "formula": "Cantidad de egresados  de la unidad académica en el exterior participantes en encuentros, proyectos, servicios ofrecidos por la unidad académica o por la Universidad/ Total de egresados de la unidad académica que se encuentran en el exterior*100",
+      "nombre": "Participación de egresados",
+      "niveles": {
+        "basica": "Menos del 5% de egresados  de la unidad académica que están en el exterior participan en encuentros, proyectos o servicios al año",
+        "transversal": "5- 15% de egresados  de la unidad académica que están en el exterior participan en encuentros, proyectos o servicios al año",
+        "sistema": "Más del 15% de egresados  de la unidad académica que están en el exterior participan en encuentros, proyectos o servicios al año"
+      }
+    },
+    {
+      "row": 16,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de estudiantes.",
+      "indicador": "7- Movilidad estudiantes",
+      "formula": "Cantidad de estudiantes de la unidad académica en movilidad nacional e internacional saliente, presencial y virtual/ Total de estudiantes potenciales de movilidad  de la unidad académica* 100",
+      "nombre": "Movilidad saliente de estudiantes",
+      "niveles": {
+        "basica": "0-0,6% estudiantes de la unidad académica potenciales de un intercambio han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "transversal": "0,7-0,9% estudiantes de la unidad académica potenciales de un intercambio han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "sistema": "Más de 1% estudiantes de la unidad académica potenciales de un intercambio han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año"
+      }
+    },
+    {
+      "row": 17,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de estudiantes.",
+      "indicador": "7- Movilidad estudiantes",
+      "formula": "Cantidad de estudiantes de la unidad académica en movilidad saliente presencial y virtual con países de otras lenguas / Total de movilidades de estudiantes matriculados en la unidad académica* 100",
+      "nombre": "Movilidad estudiantil en otras lenguas",
+      "niveles": {
+        "basica": "100% de la movilidad saliente presencial y virtual al año de los estudiantes se hace con países hispanohablantes",
+        "transversal": "1-10% de los estudiantes en movilidad saliente presencial y virtual al año lo hacen con países de otras lenguas",
+        "sistema": "11-20% de los estudiantes en movilidad saliente presencial y virtual al año lo hacen con países de otras lenguas"
+      }
+    },
+    {
+      "row": 18,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de estudiantes.",
+      "indicador": "7- Movilidad estudiantes",
+      "formula": "Cantidad de estudiantes en movilidad entrante nacional e internacional, presencial y virtual en la unidad académica/Total de estudiantes matriculados en la unidad académica*100",
+      "nombre": "Movilidad entrante de estudiantes",
+      "niveles": {
+        "basica": "0-0,3% al año",
+        "transversal": "0,4-0,5% al año",
+        "sistema": "Más de 0,5% al año"
+      }
+    },
+    {
+      "row": 19,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica en movilidad saliente presencial y virtual, nacional e internacional/ Total de profesores vinculados y ocasionales  de la unidad académica* 100",
+      "nombre": "Movilidad saliente de profesores",
+      "niveles": {
+        "basica": "0-10% profesores vinculados y ocasionales de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "transversal": "11-20-% profesores vinculados y ocasionales de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "sistema": "Más de 21% docentes de la unidad académica profesores vinculados y ocasionales de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacionalal año"
+      }
+    },
+    {
+      "row": 20,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica en movilidad saliente presencial y virtual con países de otras lenguas / Total de movilidades de profesores vinculados y ocasionales de la unidad académica * 100",
+      "nombre": "Movilidad profesoral en otras lenguas",
+      "niveles": {
+        "basica": "100% de la movilidad saliente presencial y virtual al año de profesores se hace con países hispanohablantes",
+        "transversal": "1-10% de los profesores vinculados y ocasionales en movilidad saliente presencial y virtual lo hacen con países de otras lenguas",
+        "sistema": "11-20% de los profesores vinculados y ocasionales en movilidad saliente presencial y virtual lo hacen con países de otras lenguas"
+      }
+    },
+    {
+      "row": 21,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica que asisten a eventos internacionales, presenciales o virtuales (como investigadores visitantes o conferencistas, cursos de actualización, etc.) / Cantidad total de profesores vinculados y ocasionales de la unidad académica*100",
+      "nombre": "Asistencia de profesores a eventos",
+      "niveles": {
+        "basica": "0-4% de los profesores vinculados y ocasionales e investigadores de la unidad académica  asisten a eventos internacionales presenciales o virtuales al año",
+        "transversal": "5-25% de los profesores vinculados y ocasionales e investigadores de la unidad académica  asisten a eventos internacionales presenciales o virtuales al año",
+        "sistema": "26-50% de los profesores vinculados y ocasionales e investigadores de la unidad académica  asisten a eventos internacionales presenciales o virtuales al año"
+      }
+    },
+    {
+      "row": 22,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de profesores en movilidad nacional e internacional, presencial o virtual entrante en la unidad académica/Total de profesores vinculados y ocasionales  de la unidad académica*100",
+      "nombre": "Movilidad entrante de profesores",
+      "niveles": {
+        "basica": "0-0,3% al año",
+        "transversal": "0,4-0,5% al año",
+        "sistema": "Más de 0,5% al año"
+      }
+    },
+    {
+      "row": 23,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de personal administrativo de la unidad académica en movilidad saliente presencial y virtual / Total de movilidades de personal administrativo de la unidad académica * 100",
+      "nombre": "Movilidad saliente de personal administrativo",
+      "niveles": {
+        "basica": "0-5% del personal administrativo de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "transversal": "6-10% del personal administrativo de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año",
+        "sistema": "Más de 11% del personal administrativo de la unidad académica han hecho movilidad saliente presencial o virtual, a nivel nacional e internacional al año"
+      }
+    },
+    {
+      "row": 24,
+      "eje": "Movilidad",
+      "objetivo": "Movilidad entrante y saliente de profesores y personal administrativo.",
+      "indicador": "8- Movilidad docente y de personal administrativo",
+      "formula": "Cantidad de personal administrativo de en movilidad nacional e internacional, presencial o virtual entrante en la unidad académica / Total de movilidades de personal administrativo de la unidad académica * 100",
+      "nombre": "Movilidad entrante de personal administrativo",
+      "niveles": {
+        "basica": "0-0,15% al año",
+        "transversal": "0,16-0,3% al año",
+        "sistema": "Más de 0,3% al año"
+      }
+    },
+    {
+      "row": 25,
+      "eje": "Movilidad",
+      "objetivo": "Gestión de programas de doble titulación.",
+      "indicador": "9- Programas de doble titulación",
+      "formula": "Cantidad de estudiantes de la unidad académica cursando programas de doble titulación nacional o internacional/ año",
+      "nombre": "Estudiantes en doble titulación",
+      "niveles": {
+        "basica": "Ningún estudiante de la unidad académica cursando doble titulación ",
+        "transversal": "1 estudiante de la unidad académica cursando doble titulación ",
+        "sistema": "Al menos 1 estudiante de la unidad académica cursando doble titulación por cada convenio de doble titulación vigente"
+      }
+    },
+    {
+      "row": 26,
+      "eje": "Movilidad",
+      "objetivo": "Gestión de homologaciones y reconocimiento de aprendizajes y créditos académicos.",
+      "indicador": "10- Homologaciones y reconocimiento",
+      "formula": "Cantidad de informes integrados de gestión, resultados e impactos de las homologaciones y reconocimiento de aprendizajes y créditos académicos realizados para estudiantes en movilidad saliente nacional e internacional, presencial y virtual.",
+      "nombre": "Informes de homologaciones",
+      "niveles": {
+        "basica": "1 Informe integrado de gestión de las homologaciones reconocimiento de aprendizajes y créditos académicos realizados para estudiantes en movilidad saliente",
+        "transversal": "1 Informe integrado de gestión y de resultados de las homologaciones reconocimiento de aprendizajes y créditos académicos realizados para estudiantes en movilidad saliente",
+        "sistema": "1 Informe integrado de gestión, de resultados y de impacto de las homologaciones reconocimiento de aprendizajes y créditos académicos realizados para estudiantes en movilidad saliente"
+      }
+    },
+    {
+      "row": 27,
+      "eje": "Movilidad",
+      "objetivo": "Aplicación de estímulos para la interacción y la cooperación.",
+      "indicador": "11- Estímulos para la interacción",
+      "formula": "Valor de los estímulos, apoyos económicos y recursos del fondo de movilidad otorgados a estudiantes, profesores y administrativos de la unidad académica para la interacción y la cooperación en general (nacional e internacional) y en segunda lengua / Valor del presupuesto total de la unidad académica*100",
+      "nombre": "Presupuesto para cooperación",
+      "niveles": {
+        "basica": "0-0,05% del presupuesto anual de la unidad académica se invierte en estímulos, apoyos económicos, fondo de movilidad para la interacción y la cooperación a nivel nacional e internacional",
+        "transversal": "0,06-0,07% del presupuesto anual de la unidad académica se invierte en estímulos, apoyos económicos, fondo de movilidad para la interacción y la cooperación a nivel nacional e internacional",
+        "sistema": "Más de 0,07% del del presupuesto anual de la unidad académica se invierte en estímulos, apoyos económicos, fondo de movilidad para la interacción y la cooperación a nivel nacional e internacional"
+      }
+    },
+    {
+      "row": 28,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de estrategias internacionalización en casa.",
+      "indicador": "12- Internacionalización en casa.",
+      "formula": "Cantidad de micro certificaciones ofrecidas por la unidad académica o la Universidad para los estudiantes de la unidad académica.",
+      "nombre": "Oferta de microcertificaciones",
+      "niveles": {
+        "basica": "1 microcertificación ofrecida por la Universidad al año",
+        "transversal": "2 microcertificación ofrecida por la Universidad al año",
+        "sistema": "1 microcertificación ofrecida por la Universidad y 1 microcertificación ofrecida por la unidad académica al año"
+      }
+    },
+    {
+      "row": 29,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de estrategias internacionalización en casa.",
+      "indicador": "12- Internacionalización en casa.",
+      "formula": "Cantidad de estudiantes de la unidad académica que participan en actividades que promueven la interculturalidad y la visión global / Cantidad total de estudiantes de la unidad académica",
+      "nombre": "Participación en actividades de interculturalidad",
+      "niveles": {
+        "basica": "1-5% de los estudiantes participa anualmente  en actividades  que promueven la interculturalidad y la visión global ",
+        "transversal": "6-10% de los estudiantes participa anualmente  en actividades  que promueven la interculturalidad y la visión global ",
+        "sistema": "Más del 10% de los estudiantes participa anualmente en actividades  que promueven la interculturalidad y la visión global "
+      }
+    },
+    {
+      "row": 30,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Formación de competencias globales, multiculturales y de otras lenguas.",
+      "indicador": "13- Competencias globales",
+      "formula": "Definición de habilidades internacionales en el perfil de egreso y plan de estudios ",
+      "nombre": "Perfil global de egreso",
+      "niveles": {
+        "basica": "La unidad académica no ha definido el perfl de egreso y plan de estudios que incluya formación en habilidades internacionales y habilidades multi e interculturales",
+        "transversal": "1 perfl de egreso y plan de estudios que incluye formación en habilidades internacionales (incluyendo tics y habilidades multi e interculturales)",
+        "sistema": "1 informe de evaluación de las habilidades internacionales (incluyendo tics y habilidades multi e interculturales) en los estudiantes de la unidad académica"
+      }
+    },
+    {
+      "row": 31,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Formación de competencias globales, multiculturales y de otras lenguas.",
+      "indicador": "13- Competencias globales",
+      "formula": "Cantidad de estudiantes de la unidad académica con competencias en segunda lengua / Total de estudiantes  de la unidad académica* 100",
+      "nombre": "Certificación de estudiantes en segunda lengua",
+      "niveles": {
+        "basica": "0-5% de los estudiantes certificados en un nivel B1",
+        "transversal": "6-10% de los estudiantes certificados en un nivel B1",
+        "sistema": "Más del 10% de los estudiantes certificados en un nivel B1"
+      }
+    },
+    {
+      "row": 32,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Formación de competencias globales, multiculturales y de otras lenguas.",
+      "indicador": "13- Competencias globales",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica con competencias en segunda lengua / Total de profesores  vinculados y ocasionales de la unidad académica* 100",
+      "nombre": "Certificación profesores en segunda lengua",
+      "niveles": {
+        "basica": "0-30% de los docentes certificados en un nivel B1",
+        "transversal": "31-50% de los docentes certificados en un nivel B1",
+        "sistema": "50% de los docentes certificados en un nivel B2"
+      }
+    },
+    {
+      "row": 33,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Formación de competencias globales, multiculturales y de otras lenguas.",
+      "indicador": "13- Competencias globales",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica formados en competencias globales y multiculturales por la unidad académica, la DRI, otra dependencia de la Universidad o externamente/ Total de profesores vinculados y ocasionales de la unidad académica* 100",
+      "nombre": "Formación docente en competencias globales",
+      "niveles": {
+        "basica": "0-10% de profesores vinculados y ocasionales de la unidad académica asiste anualmente mínimo a 10 horas de capacitación a actividades de formación en competencias globales y multiculturales",
+        "transversal": "11-20% de profesores vinculados y ocasionales de la unidad académica asiste anualmente mínimo a 10 horas de capacitación a actividades de formación en competencias globales y multiculturales",
+        "sistema": "21- 30% de profesores vinculados y ocasionales de la unidad académica asiste anualmente mínimo a 10 horas de capacitación a actividades de formación en competencias globales y multiculturales"
+      }
+    },
+    {
+      "row": 34,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de estrategias de internacionalización del currículo.",
+      "indicador": "14- Internacionalización del currículo.",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica que aplican estrategias de internacionalización del currículo: contenido internacional, cotutelas, clase espejo, codirecciones, COIL,  bibliografía en otro idioma, aula invertida, CUL/AICLE Aprendizaje Integrado de Contenidos y Lenguas Extranjeras (AICLE; en inglés Content and Language Integrated Learning, CLIL), participación en comunidades internacionales de aprendizaje, competencia multi e interculturales, enfoque inter comprensivo de otras lenguas, entre otras / Total de profesores vinculados y ocasionales de la unidad académica * 100",
+      "nombre": "Estrategias de internacionalización en el aula",
+      "niveles": {
+        "basica": "1-10% de profesores  vinculados y ocasionales de la unidad académica aplican al menos 1 estrategia de internacionalización del currículo al año",
+        "transversal": "1-10% de profesores vinculados y ocasionales de la unidad académica  aplican al menos 2 estrategias de internacionalización del currículo al año",
+        "sistema": "1-10% de profesores vinculados y ocasionales de la unidad académica  aplican al menos 3 estrategia de internacionalización del currículo al año"
+      }
+    },
+    {
+      "row": 35,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de estrategias de internacionalización del currículo.",
+      "indicador": "14- Internacionalización del currículo.",
+      "formula": "Cantidad de planes de estudio de los programas de la unidad académica con sistema de créditos armonizados con referentes internacionales/ Total de programas académicos de la unidad académica*100",
+      "nombre": "Armonización de planes de estudios",
+      "niveles": {
+        "basica": "Ninguno de los planes de estudios armonizados",
+        "transversal": "En proceso de armonización de los planes de estudios ",
+        "sistema": "100% de los planes de estudios armonizados"
+      }
+    },
+    {
+      "row": 36,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de estrategias de internacionalización del currículo.",
+      "indicador": "14- Internacionalización del currículo.",
+      "formula": "Cantidad de planes de estudio de los programas de la unidad académica con resultados de aprendizaje referenciados internacionalmente/ Total de programas académicos de la unidad académica*100",
+      "nombre": "Referenciación internacional de resultados de aprendizaje",
+      "niveles": {
+        "basica": "Ninguno de los planes de estudios con referenciación internacional de resultados de aprendizaje",
+        "transversal": "La unidad académica en proceso de referenciación internacional de resultados de aprendizaje",
+        "sistema": "100% de los planes de estudios con referentes de resultados de aprendizaje"
+      }
+    },
+    {
+      "row": 37,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de servicios y actividades de diplomacia científica en las que participa la unidad académica / año",
+      "nombre": "Acciones de diplomacia científica",
+      "niveles": {
+        "basica": "1 acción de diplomacia científica en el que participa la unidad académica al año",
+        "transversal": "Entre 2 y 3 acciones de diplomacia científica en los que participa la unidad académica al año",
+        "sistema": "Más de 4 acciones de diplomacia científica en los que participa la unidad académica al año"
+      }
+    },
+    {
+      "row": 38,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Artículos con investigadores extranjeros",
+      "niveles": {
+        "basica": "Ningún artículo de investigación  publicado en revistas indexadas de manera conjunta con investigadores extranjeros.",
+        "transversal": "1-4% de los artículos de investigación son publicados en revistas indexadas de manera conjunta con investigadores extranjeros.",
+        "sistema": "Mínimo 5% de los artículos de investigación son publicados en revistas indexadas de manera conjunta con investigadores extranjeros."
+      }
+    },
+    {
+      "row": 39,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Libros con investigadores extranjeros",
+      "niveles": {
+        "basica": "Ninguno de libros resultados de investigación publicados con investigadores extranjeros.",
+        "transversal": "1-4% de libros resultados de investigación publicados con investigadores extranjeros.",
+        "sistema": "Mínimo 5% de libros resultados de investigación publicados con investigadores extranjeros."
+      }
+    },
+    {
+      "row": 40,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Capítulos de libros con investigadores extranjeros",
+      "niveles": {
+        "basica": "Ningún capítulo de libro resultado de investigación publicados con investigadores extranjeros.",
+        "transversal": "1-4% de capítulos de libros resultados de investigación publicados con investigadores extranjeros.",
+        "sistema": "Mínimo 5% de capítulos de libros resultados de investigación publicados con investigadores extranjeros."
+      }
+    },
+    {
+      "row": 41,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Registros conjuntos de patentes",
+      "niveles": {
+        "basica": "Ningún registro conjunto de patente realizados con investigadores extrenjeros (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "transversal": "En proceso un registro conjunto de patente realizados con investigadores extrenjeros (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "sistema": "1 registro conjunto de patente realizados con investigadores extrenjeros (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
+      }
+    },
+    {
+      "row": 42,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Registros conjuntos de software",
+      "niveles": {
+        "basica": "Ningún registro de software producto de investigación con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)..",
+        "transversal": "En proceso 1 registro de software producto de investigación con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)..",
+        "sistema": "1 registro de software producto de investigación con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).."
+      }
+    },
+    {
+      "row": 43,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Registros conjuntos de secretos empresariales",
+      "niveles": {
+        "basica": "Ningún  registro conjunto de secretos empresarial con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "transversal": "En proceso 1 registro conjunto de secretos empresarial con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "sistema": "1 registro conjunto de secretos empresarial con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
+      }
+    },
+    {
+      "row": 44,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Registros conjuntos de empresas",
+      "niveles": {
+        "basica": "Ningún registros de empresa de base tecnológica conjunto con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "transversal": "En proceso 1 registros de empresa de base tecnológica conjunto con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "sistema": "1 registros de empresa de base tecnológica conjunto con investigadores extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
+      }
+    },
+    {
+      "row": 45,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Desarrollo conjunto de prototipos",
+      "niveles": {
+        "basica": "Ningún desarrollo  de prototipo industrial con contrato de fabricación, explotación o comercialización en conjunto con investigadores extranjeros.(aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "transversal": "En proceso 1 desarrollo  de prototipo industrial con contrato de fabricación, explotación o comercialización en conjunto con investigadores extranjeros.(aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "sistema": "1 desarrollo  de prototipo industrial con contrato de fabricación, explotación o comercialización en conjunto con investigadores extranjeros.(aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
+      }
+    },
+    {
+      "row": 46,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Proyección internacional de la producción científica Innovación, artística, cultural y emprendimientos.",
+      "indicador": "15- Producción investigativa",
+      "formula": "Cantidad de productos de investigación publicados por investigadores de la unidad académica con investigadores extranjeros/ Cantidad de productos de investigación realizados en la unidad académica*100",
+      "nombre": "Desarrollo conjunto de obras artísticas",
+      "niveles": {
+        "basica": "Ningún desarrollo de muestras de obras artísticas y culturales  en conjunto con artistas extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "transversal": "En proceso 1 desarrollo de muestras de obras artísticas y culturales  en conjunto con artistas extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
+        "sistema": "1 desarrollo de muestras de obras artísticas y culturales  en conjunto con artistas extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
+      }
+    },
+    {
+      "row": 47,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Gestión de recursos y oportunidades de cooperación.",
+      "indicador": "16- Recursos de cooperación",
+      "formula": "Cantidad de proyectos de cooperación académica nacional e internacional gestionados por la unidad académica al año.",
+      "nombre": "Proyectos de cooperación",
+      "niveles": {
+        "basica": "Ningún proyectos de cooperación académica gestionados al año por la unidad académica",
+        "transversal": "1 proyectos de cooperación académica gestionados al año por la unidad académica a nivel nacional o internacional",
+        "sistema": "2 proyectos de cooperación académica gestionados al año por la unidad académica a nivel nacional o internacional"
+      }
+    },
+    {
+      "row": 48,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Referenciación internacional de oferta académica, tendencias de las disciplinas, experiencias y prácticas.",
+      "indicador": "17- Referenciación académica",
+      "formula": "Cantidad de estudios de referenciación internacional realizados por la unidad académica al año",
+      "nombre": "Estudios de referenciación",
+      "niveles": {
+        "basica": "Ningún estudio de referenciación internacional de oferta académica, tendencias de las disciplinas, experiencias y prácticas realizado por la unidad académica al año",
+        "transversal": "En proceso 1 estudio de referenciación internacional de oferta académica, tendencias de las disciplinas, experiencias y prácticas realizado por la unidad académica al año",
+        "sistema": "1 estudio de referenciación internacional de oferta académica, tendencias de las disciplinas, experiencias y prácticas realizado por la unidad académica al año"
+      }
+    },
+    {
+      "row": 49,
+      "eje": "Gestión de Capacidades",
+      "objetivo": "Incorporación de tecnologías de información y aprendizaje.",
+      "indicador": "18- Tecnologías de aprendizaje",
+      "formula": "Cantidad de profesores vinculados y ocasionales de la unidad académica que incorporan tecnologías de aprendizaje: recursos educativos digitales abiertos, MOOC- Massive, Open, Online, Course-, NOOC - Nano Open Online Massive- y SPOC- Small Private Online Course/ Total de profesores vinculados y ocasionales de la unidad académica de la unidad académica * 100",
+      "nombre": "Tecnologías aplicadas a la docencia",
+      "niveles": {
+        "basica": "1-10% de profesores vinculados y ocasionales de la unidad académica incorporan al menos 1 tecnología",
+        "transversal": "11-15% de profesores  vinculados y ocasionales de la unidad académica incorporan al menos 1 tecnología",
+        "sistema": "Más de 15% de profesores  vinculados y ocasionales de la unidad académica incorporan al menos 1 tecnología"
+      }
+    },
+    {
+      "row": 50,
+      "eje": "Gestión Administrativa",
+      "objetivo": "Existencia de una estructura de soporte para la internacionalización.",
+      "indicador": "19- Estructura organizacional",
+      "formula": "Cantidad de personas que soportan la gestión operativa de la internacionalización en la unidad académica",
+      "nombre": "Responsables de la internacionalización",
+      "niveles": {
+        "basica": "Una estructura que responda a la capacidad instalada de la unidad académica (talento humano, recursos, etc.) y a las metas definidas por esta en términos de internacionalización  ",
+        "transversal": "Una estructura que responda a la internacionalización como procesos y a la capacidad instalada de la unidad académica (talento humano, recursos, etc.)",
+        "sistema": "Una estructura que responda a la internacionalización como sistema y a la capacidad instalada de la unidad académica (talento humano, recursos, etc.)"
+      }
+    },
+    {
+      "row": 51,
+      "eje": "Gestión Administrativa",
+      "objetivo": "Existencia de lineamientos para la internacionalización.",
+      "indicador": "20- Lineamientos  de internacionalización",
+      "formula": "Aplicación en la unidad académica de lineamientos institucionales para la internacionalización: movilidad, contratación profesores extranjeros, contratación de profesores con competencias en segunda lengua, homologaciones y reconocimiento de resultados de aprendizaje",
+      "nombre": "Aplicación de lineamientos internacionalización",
+      "niveles": {
+        "basica": "Ningún  lineamiento institucional para la internacionalización se aplica en la unidad académica",
+        "transversal": "En proceso de aplicación en la unidada académica los lineamientos institucionales  para movilidad, contratación profesores extranjeros, contratación de profesores con competencias en segunda lengua, homologaciones y reconocimiento de resultados de aprendizaje",
+        "sistema": "Aplicación  en la unidad académica de los lineamientos institucionales para movilidad, contratación profesores extranjeros, contratación de profesores con competencias en segunda lengua, homologaciones y reconocimiento de resultados de aprendizaje"
+      }
+    },
+    {
+      "row": 52,
+      "eje": "Gestión Administrativa",
+      "objetivo": "Gestión de sistema institucional de evaluación y autorregulación de la internacionalización.",
+      "indicador": "21- Evaluación y autorregulación",
+      "formula": "Existencia de un sistema institucional de gestión integral de la internacionalización",
+      "nombre": "Sistema integrado de gestión",
+      "niveles": {
+        "basica": "Inexistencia de un sistema integrado de aseguramiento de la calidad implementado en la unidad académica que inlcuye la internacionalización como proceso transversal",
+        "transversal": "En proceso de apropiación del sistemainstitucional integrado de aseguramiento de la calidad por la unidad académica, que incluye la internacionalización como proceso transversal",
+        "sistema": "1 sistema institucional integrado de aseguramiento de la calidad apropiado en la unidad académica que icluye la internacionalización como proceso transversal"
+      }
+    },
+    {
+    "row": 53,
+    "eje": "Gestión Administrativa",
+    "objetivo": "Comunicación y difusión de servicios y actividades de internacionalización.",
+    "indicador": "22- Comunicación",
+    "formula": "Cantidad de servicios y actividades de internacionalización que se difunden por parte de la Universidad y de la unidad académica a los miembros de la comunidad de la unidad académica",
+    "nombre": "Difusión de actividades",
+    "niveles": {
+      "basica": "1-30 actividades de internacionalización se difunden por parte de la Universidad y de la unidad académica a los miembros de esta/Año",
+      "transversal": "31-60 actividades de internacionalización se difunden por parte de la Universidad y de la unidad académica a los miembros de esta/Año",
+      "sistema": "Más de 61 actividades de internacionalización se difunden por parte de la Universidad y de la unidad académica a los miembros de esta/Año"
+    }
+  },
+  {
+    "row": 54,
+    "eje": "Gestión Administrativa",
+    "objetivo": "Asignación de recursos para la internacionalización.",
+    "indicador": "23- Recursos disponibles",
+    "formula": "Valor de los recursos asignados a la internacionalización en la unidad académica/ Valor del presupuesto total de la unidad académica*100",
+    "nombre": "Recursos para la internacionalización",
+    "niveles": {
+      "basica": "0-0,09% del presupuesto de la unidad académica se invierte en internacionalización",
+      "transversal": "0,1-1,5% del presupuesto de la unidad académica se invierte en internacionalización",
+      "sistema": "Más de 1,5% del presupuesto de la unidad académica se invierte en internacionalización"
+    }
+  },
+  {
+    "row": 55,
+    "eje": "Gestión Administrativa",
+    "objetivo": "Oferta de servicios de bienestar para visitantes internacionales.",
+    "indicador": "24- Bienestar visitantes",
+    "formula": "Cantidad de visitantes internacionales a la unidad académica que recibieron servicios de bienestar /Cantidad total de visitantes internacionales*100",
+    "nombre": "Acceso a servicios de bienestar",
+    "niveles": {
+      "basica": "La Universidad no da acceso a los visitantes internacionales de la unidad académica a servicios de bienestar",
+      "transversal": "La Universidad da acceso restringido a los visitantes internacionales de la unidad académica a servicios de bienestar",
+      "sistema": "100% de los visitantes internacionales presenciales (estudiantes, administrativos, profesores) de la unidad académica tienen acceso a algún servicio de bienestar"
+    }
+  },
+  {
+    "row": 56,
+    "eje": "Gestión Administrativa",
+    "objetivo": "Implementación de un sistema institucional de información de la internacionalización.",
+    "indicador": "25- Sistema de información",
+    "formula": "Existencia de bases de datos y sistemas de información institucionales y de la unidad académica que soportan la gestión de la internacionalización de la unidad académica",
+    "nombre": "Funcionamiento de un sistema de información",
+    "niveles": {
+      "basica": "1 base de datos de movilidad saliente y 1 base de datos de convenios actualizadas permanentemente",
+      "transversal": "1 base de datos de movilidad saliente, 1 base de datos de movilidad entrante y 1 base de datos de convenios actualizadas permanentemente",
+      "sistema": "1 sistema de información institucional de la internacionalización apropiado en la unidad académica."
+    }
+  },
+  {
+    "row": 57,
+    "eje": "Gestión Administrativa",
+    "objetivo": "Elaboración de estudios de impacto de la internacionalización.",
+    "indicador": "26- Estudios de impacto",
+    "formula": "Cantidad de estudios de impacto de internacionalización elaborados al año por la unidad académica",
+    "nombre": "Realización de estudios de impacto",
+    "niveles": {
+      "basica": "Ningún estudio de impacto de la internacionalización",
+      "transversal": "Estudios de impacto de la internacionalización en proceso de elaboración",
+      "sistema": "1 estudio de impacto de los ajustes curriculares derivados del análisis de tendencias y de la interacción de los estudiantes y docentes, 1 estudio de impacto de la aplicación de políticas y estrategias de interacción con comunidades, o 1 estudio de impacto de las estrategias de interacción y formación en segunda lengua."
+    }
+  }
+  ]
+}
