@@ -22,6 +22,7 @@
   display: grid;
   gap: 1rem;
   min-height: 100vh;
+  align-content: start;
 }
 
 .page-glow {
@@ -57,7 +58,10 @@
 }
 
 .hero-panel {
-  padding: clamp(1rem, 2vw, 2rem);
+  padding: clamp(0.85rem, 1.3vw, 1.2rem) clamp(1rem, 1.8vw, 1.6rem);
+  align-self: start;
+  display: grid;
+  gap: 0.45rem;
   background:
     linear-gradient(135deg, rgba(1, 96, 45, 0.96), rgba(0, 116, 115, 0.92)),
     repeating-linear-gradient(
@@ -79,14 +83,14 @@
 }
 
 .hero-panel h1 {
-  margin: 0.45rem 0 0;
+  margin: 0.18rem 0 0;
   font-size: clamp(1.55rem, 3vw, 2.5rem);
   line-height: 1.1;
 }
 
 .hero-copy {
-  margin: 0.6rem 0 0;
-  max-width: 70ch;
+  margin: 0.2rem 0 0;
+  max-width: 180ch;
   color: rgba(244, 255, 248, 0.9);
 }
 
@@ -319,6 +323,8 @@
   padding: 0.65rem;
   display: grid;
   gap: 0.35rem;
+  justify-items: center;
+  text-align: center;
   background: #fbfefb;
   cursor: pointer;
 }
@@ -330,6 +336,7 @@
   min-width: 18px;
   min-height: 18px;
   margin: 0;
+  justify-self: center;
   flex-shrink: 0;
 }
 

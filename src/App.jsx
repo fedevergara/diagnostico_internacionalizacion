@@ -8,9 +8,9 @@ import "./App.css";
 const items = normalizeItems(raw.items);
 
 const LEVELS = [
-  { id: 1, label: "Basica", key: "basica" },
-  { id: 2, label: "Transversal", key: "transversal" },
-  { id: 3, label: "Sistema", key: "sistema" },
+  { id: 1, label: "Bajo", key: "basica" },
+  { id: 2, label: "Medio", key: "transversal" },
+  { id: 3, label: "Alto", key: "sistema" },
 ];
 
 const EJE_ORDER = [
@@ -210,9 +210,14 @@ export default function App() {
 
       <header className="panel hero-panel">
         <p className="hero-kicker">Universidad de Antioquia</p>
-        <h1>Diagnostico de Internacionalizacion</h1>
+        <h1>DIAGNÓSTICO - PLANES DE INTERNACIONALIZACIÓN</h1>
         <p className="hero-copy">
-          Instrumento para caracterizar el nivel de internacionalizacion por unidad academica.
+          Para facilitarle a las Unidades Académicas la reflexión sobre su estado en materia de internacionalización, se asociaron los ejes,
+          objetivos e indicadores a los escenarios, determinando unos niveles de desarrollo de los indicadores, como se muestra en la siguiente herramienta.
+        </p>
+        <p className="hero-copy">
+          El propósito es que cada unidad pueda realizar un diagnóstico de su estado actual, con base en la información que tenga disponible, y a partir de esto,
+          identificar los aspectos a fortalecer para avanzar en su proceso de internacionalización.
         </p>
       </header>
 
@@ -224,7 +229,7 @@ export default function App() {
             value={unidad}
             onChange={(e) => setUnidad(e.target.value)}
           >
-            <option value="">Seleccione una unidad academica</option>
+            <option value="">Seleccione una Unidad Académica</option>
             {unidades.map((u) => (
               <option key={u} value={u}>
                 {u}
@@ -255,7 +260,7 @@ export default function App() {
 
       <section className="stats-grid">
         <article className="panel stat-card">
-          <span className="stat-label">Unidad</span>
+          <span className="stat-label">Unidad Académica</span>
           <strong className="stat-value unit-text">{unidad || "Sin seleccionar"}</strong>
         </article>
 
@@ -271,7 +276,7 @@ export default function App() {
           <span className="stat-label">Nivel actual</span>
           <strong className="stat-value">{stats.nivel}</strong>
           <span className="stat-meta">
-            Basica {stats.c1} | Transversal {stats.c2} | Sistema {stats.c3}
+            Bajo {stats.c1} | Medio {stats.c2} | Alto {stats.c3}
           </span>
         </article>
       </section>
@@ -284,7 +289,7 @@ export default function App() {
 
       {!unidad && (
         <div className="panel notice-box">
-          Selecciona una unidad academica para habilitar Diagnostico y Resultados.
+          Selecciona una Unidad Académica para habilitar Diagnostico y Resultados.
         </div>
       )}
 
@@ -292,7 +297,7 @@ export default function App() {
         <section className="diagnostico-view">
           <div id="diagnostico-top" />
           {Array.from(tree.entries()).map(([eje, byObj]) => (
-            <details key={eje} className="panel eje-card" open>
+            <details key={eje} className="panel eje-card">
               <summary className="eje-summary">{eje}</summary>
 
               <div className="eje-content">
@@ -329,7 +334,7 @@ export default function App() {
             className={`pdf-area ${isPdfExporting ? "pdf-exporting" : ""}`}
           >
             <div className="pdf-header">
-              <h2>Resultados del Diagnostico</h2>
+              <h2>Resultados del Diagnóstico</h2>
               <p>{unidad}</p>
               <p>
                 Respondidas: {stats.answered}/{stats.total} | Nivel: {stats.nivel}
@@ -363,7 +368,7 @@ export default function App() {
           </div>
 
           <button onClick={downloadPdf} className="download-button" type="button">
-            Descargar diagnostico
+            Descargar diagnóstico
           </button>
         </section>
       )}
