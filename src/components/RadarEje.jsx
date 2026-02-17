@@ -9,7 +9,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Requisito: registrar módulos usados por el chart (si no, no renderiza)
 ChartJS.register(
   RadialLinearScale,
   PointElement,
@@ -19,12 +18,32 @@ ChartJS.register(
   Legend
 );
 
-export default function RadarEje({ titulo, indicators, answers }) {
-  const labels = indicators.map((it) => it.nombre); // nombre corto
-  const values = indicators.map((it) => answers[it.id] ?? 0); // 0 si no respondió
+function hexToRgba(hex, alpha) {
+  const normalized = hex.replace("#", "");
+  const bigint = Number.parseInt(normalized, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export default function RadarEje({
+  titulo,
+  indicators,
+  answers,
+  color = "#01602D",
+  forPdf = false,
+}) {
+  const labels = indicators.map((it) => it.nombre);
+  const values = indicators.map((it) => answers[it.id] ?? 0);
+  const isDense = labels.length >= 10;
+  const maxCharsPerLine = forPdf ? (isDense ? 17 : 20) : (isDense ? 17 : 21);
+  const maxLines = forPdf ? 3 : 2;
+  const pointLabelSize = forPdf ? (isDense ? 9 : 10) : (isDense ? 9 : 10);
+  const chartPadding = forPdf ? (isDense ? 20 : 16) : (isDense ? 20 : 16);
+  const pointLabelPadding = forPdf ? 4 : 0;
 
   const wrapLabel = (label) => {
-    const maxCharsPerLine = 28;
     const words = String(label).split(" ");
     const lines = [];
     let current = "";
@@ -38,8 +57,9 @@ export default function RadarEje({ titulo, indicators, answers }) {
         current = word;
       }
     }
+
     if (current) lines.push(current);
-    return lines.slice(0, 2);
+    return lines.slice(0, maxLines);
   };
 
   const data = {
@@ -48,7 +68,12 @@ export default function RadarEje({ titulo, indicators, answers }) {
       {
         label: titulo,
         data: values,
-        // no definimos colores para mantenerlo simple; Chart.js usa defaults
+        backgroundColor: hexToRgba(color, 0.22),
+        borderColor: color,
+        borderWidth: 2,
+        pointBackgroundColor: color,
+        pointBorderColor: "#ffffff",
+        pointRadius: 2.6,
       },
     ],
   };
@@ -56,27 +81,54 @@ export default function RadarEje({ titulo, indicators, answers }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    animation: false, // importante para exportar luego a PDF sin “capturas en blanco”
+    animation: false,
+    layout: {
+      padding: {
+        top: chartPadding,
+        bottom: chartPadding,
+        left: chartPadding,
+        right: chartPadding,
+      },
+    },
     scales: {
       r: {
         suggestedMin: 0,
-        suggestedMax: 3, // tus valores son 1–3 (y 0 si falta)
-        ticks: { stepSize: 1 },
+        suggestedMax: 3,
+        ticks: {
+          stepSize: 1,
+          color: "#26402f",
+          backdropColor: "rgba(255,255,255,0.7)",
+        },
+        angleLines: {
+          color: hexToRgba(color, 0.18),
+        },
+        grid: {
+          color: hexToRgba(color, 0.18),
+        },
         pointLabels: {
-          font: { size: 10 },
+          color: "#1b3123",
+          font: { size: pointLabelSize, weight: 600 },
+          padding: pointLabelPadding,
           callback: (label) => wrapLabel(label),
         },
       },
     },
     plugins: {
       legend: { display: false },
+      tooltip: {
+        backgroundColor: "#102319",
+        titleColor: "#ecfff2",
+        bodyColor: "#ecfff2",
+      },
     },
   };
 
   return (
-    <div style={{ border: "1px solid #eee", borderRadius: 12, padding: 12 }}>
-      <h4 style={{ margin: "0 0 8px 0" }}>{titulo}</h4>
-      <div style={{ height: 360 }}>
+    <div className="panel radar-card">
+      <h4 className="radar-title" style={{ color }}>
+        {titulo}
+      </h4>
+      <div className="radar-canvas">
         <Radar data={data} options={options} />
       </div>
     </div>

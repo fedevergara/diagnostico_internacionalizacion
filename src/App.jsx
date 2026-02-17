@@ -1,103 +1,102 @@
 import { useMemo, useState } from "react";
+import html2pdf from "html2pdf.js";
 import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
 import RadarEje from "./components/RadarEje";
-import html2pdf from "html2pdf.js";
+import "./App.css";
 
 const items = normalizeItems(raw.items);
 
+const LEVELS = [
+  { id: 1, label: "Basica", key: "basica" },
+  { id: 2, label: "Transversal", key: "transversal" },
+  { id: 3, label: "Sistema", key: "sistema" },
+];
+
+const EJE_ORDER = [
+  "Interacción Estratégica",
+  "Movilidad",
+  "Gestión de Capacidades",
+  "Gestión Administrativa",
+];
+
+const EJE_COLORS = {
+  "Interacción Estratégica": "#007473",
+  Movilidad: "#752157",
+  "Gestión de Capacidades": "#007297",
+  "Gestión Administrativa": "#F5333F",
+};
+
 function Indicator({ it, value, onPick }) {
   return (
-    <div
-      style={{
-        border: "1px solid #ddd",
-        padding: 12,
-        borderRadius: 8,
-        marginBottom: 10,
-      }}
-    >
-      <div>
-        <b>{it.indicador}</b> — {it.nombre}
+    <article className="indicator-card">
+      <header className="indicator-header">
+        <h4 className="indicator-title">
+          <span className="indicator-code">{it.indicador}</span>
+          <span>{it.nombre}</span>
+        </h4>
+        <p className="indicator-formula">{it.formula}</p>
+      </header>
+
+      <div className="indicator-options">
+        {LEVELS.map((level) => (
+          <label
+            key={`${it.id}-${level.id}`}
+            className={`indicator-option ${value === level.id ? "is-selected" : ""}`}
+          >
+            <input
+              type="radio"
+              name={`ind-${it.id}`}
+              checked={value === level.id}
+              onChange={() => onPick(level.id)}
+            />
+            <span className="option-title">{level.label}</span>
+            <span className="option-desc">{it.niveles?.[level.key]}</span>
+          </label>
+        ))}
       </div>
-      <div style={{ fontSize: 13, opacity: 0.8 }}>{it.formula}</div>
-
-      <div style={{ display: "flex", gap: 40, marginTop: 8, flexWrap: "wrap" }}>
-        <label style={{ maxWidth: 280 }}>
-          <input
-            type="radio"
-            name={`ind-${it.id}`}
-            checked={value === 1}
-            onChange={() => onPick(1)}
-          />{" "}
-          Básica
-          <div style={{ fontSize: 12, opacity: 0.9 }}>{it.niveles?.basica}</div>
-        </label>
-
-        <label style={{ maxWidth: 280 }}>
-          <input
-            type="radio"
-            name={`ind-${it.id}`}
-            checked={value === 2}
-            onChange={() => onPick(2)}
-          />{" "}
-          Transversal
-          <div style={{ fontSize: 12, opacity: 0.9 }}>
-            {it.niveles?.transversal}
-          </div>
-        </label>
-
-        <label style={{ maxWidth: 280 }}>
-          <input
-            type="radio"
-            name={`ind-${it.id}`}
-            checked={value === 3}
-            onChange={() => onPick(3)}
-          />{" "}
-          Sistema
-          <div style={{ fontSize: 12, opacity: 0.9 }}>{it.niveles?.sistema}</div>
-        </label>
-      </div>
-    </div>
+    </article>
   );
 }
 
 export default function App() {
-  // Tabs
-  const [tab, setTab] = useState("diagnostico"); // "diagnostico" | "resultados"
+  const [tab, setTab] = useState("diagnostico");
   const [unidad, setUnidad] = useState("");
+  const [isPdfExporting, setIsPdfExporting] = useState(false);
 
   const unidades = [
     "Facultad de Artes",
     "Facultad de Ciencias Exactas y Naturales",
     "Facultad de Ciencias Sociales y Humanas",
-    "Facultad de Derecho y Ciencias Políticas",
-    "Instituto de Estudios Políticos",
-    "Facultad de Comunicaciones y Filología",
+    "Facultad de Derecho y Ciencias Politicas",
+    "Instituto de Estudios Politicos",
+    "Facultad de Comunicaciones y Filologia",
     "Escuela de Idiomas",
-    "Instituto de Filosofía",
-    "Facultad de Ciencias Económicas",
+    "Instituto de Filosofia",
+    "Facultad de Ciencias Economicas",
     "Instituto de Estudios Regionales",
-    "Corporación Académica Ambiental",
-    "Facultad de Educación",
-    "Facultad de Ingeniería",
+    "Corporacion Academica Ambiental",
+    "Facultad de Educacion",
+    "Facultad de Ingenieria",
     "Facultad de Medicina",
-    "Facultad de Odontología",
-    "Facultad de Ciencias Farmacéuticas y Alimentarias",
-    "Escuela de Microbiología",
+    "Facultad de Odontologia",
+    "Facultad de Ciencias Farmaceuticas y Alimentarias",
+    "Escuela de Microbiologia",
     "Facultad de Ciencias Agrarias",
-    "Escuela Interamericana de Bibliotecología",
-    "Dirección de Regionalización",
-    "Facultad de Enfermería",
-    "Facultad Nacional de Salud Pública",
-    "Instituto Universitario de Educación Física y Deporte",
-    "Escuela de Nutrición y Dietética",
-    "Corporación Académica Ciencias Básicas Biomédicas",
+    "Escuela Interamericana de Bibliotecologia",
+    "Direccion de Regionalizacion",
+    "Facultad de Enfermeria",
+    "Facultad Nacional de Salud Publica",
+    "Instituto Universitario de Educacion Fisica y Deporte",
+    "Escuela de Nutricion y Dietetica",
+    "Corporacion Academica Ciencias Basicas Biomedicas",
   ];
 
-  // Answers = Hoja2!F2:F51 (0/1/2/3)
   const [answers, setAnswers] = useState(() => {
     const init = {};
-    items.forEach((it) => (init[it.id] = 0));
+    items.forEach((it) => {
+      init[it.id] = 0;
+    });
     return init;
   });
 
@@ -112,22 +111,22 @@ export default function App() {
     return items;
   }, [unidad]);
 
-  // Stats (derivados)
   const stats = useMemo(() => {
-    let c1 = 0,
-      c2 = 0,
-      c3 = 0,
-      answered = 0;
+    let c1 = 0;
+    let c2 = 0;
+    let c3 = 0;
+    let answered = 0;
 
     for (const it of activeItems) {
       const v = answers[it.id] ?? 0;
-      if (v > 0) answered++;
-      if (v === 1) c1++;
-      if (v === 2) c2++;
-      if (v === 3) c3++;
+      if (v > 0) answered += 1;
+      if (v === 1) c1 += 1;
+      if (v === 2) c2 += 1;
+      if (v === 3) c3 += 1;
     }
 
     const total = activeItems.length;
+    const progreso = total === 0 ? 0 : Math.round((answered / total) * 100);
 
     let nivel = "pendiente";
     if (answered > 0) {
@@ -136,12 +135,11 @@ export default function App() {
       else nivel = "sistema";
     }
 
-    return { c1, c2, c3, answered, total, nivel };
+    return { c1, c2, c3, answered, total, progreso, nivel };
   }, [answers, activeItems]);
 
   const textoNivel = raw.niveles_texto?.[stats.nivel] ?? "";
 
-  // Agrupación: Eje -> Objetivo -> items
   const tree = useMemo(() => {
     const byEje = new Map();
 
@@ -159,154 +157,148 @@ export default function App() {
     return byEje;
   }, [activeItems]);
 
-  // Función para descargar PDF usando html2pdf
+  const orderedEjes = useMemo(() => {
+    const entries = Array.from(tree.entries());
+    const orderIndex = new Map(EJE_ORDER.map((eje, index) => [eje, index]));
+
+    return entries.sort((a, b) => {
+      const ai = orderIndex.get(a[0]) ?? Number.MAX_SAFE_INTEGER;
+      const bi = orderIndex.get(b[0]) ?? Number.MAX_SAFE_INTEGER;
+      if (ai !== bi) return ai - bi;
+      return a[0].localeCompare(b[0], "es");
+    });
+  }, [tree]);
+
   const downloadPdf = async () => {
-  // Asegura que estás en Resultados (por si llamas el botón desde otro lado)
-  if (tab !== "resultados") setTab("resultados");
+    if (tab !== "resultados") setTab("resultados");
 
-  // Espera 1 tick para que el DOM y los canvas estén listos
-  await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
 
-  const element = document.getElementById("pdf");
-  if (!element) return;
+    const element = document.getElementById("pdf");
+    if (!element) return;
 
-  await html2pdf()
-    .from(element)
-    .set({
-      filename: "diagnostico-internacionalizacion.pdf",
-      margin: 10,
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      pagebreak: { mode: ["css", "legacy"] },
-    })
-    .save();
+    setIsPdfExporting(true);
+    await new Promise((r) => setTimeout(r, 220));
+    window.dispatchEvent(new Event("resize"));
+    await new Promise((r) => setTimeout(r, 220));
+
+    try {
+      await html2pdf()
+        .from(element)
+        .set({
+          filename: "diagnostico-internacionalizacion.pdf",
+          margin: 10,
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["css", "legacy"] },
+        })
+        .save();
+    } finally {
+      setIsPdfExporting(false);
+    }
   };
 
-  // UI helpers
-  const TabButton = ({ id, children }) => (
-    <button
-      onClick={() => setTab(id)}
-      disabled={tab === id || !unidad}
-      style={{
-        padding: "8px 12px",
-        borderRadius: 10,
-        border: "1px solid #ddd",
-        cursor: tab === id || !unidad ? "default" : "pointer",
-        opacity: tab === id || !unidad ? 0.7 : 1,
-      }}
-    >
-      {children}
-    </button>
-  );
+  const scrollToDiagnosticoTop = () => {
+    const anchor = document.getElementById("diagnostico-top");
+    anchor?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <div style={{ padding: 16, maxWidth: 1100, margin: "0 auto" }}>
-      <h1 style={{ marginTop: 0 }}>Diagnóstico de Internacionalización</h1>
+    <div className="app-shell">
+      <div className="page-glow page-glow-a" />
+      <div className="page-glow page-glow-b" />
 
-      {/* Selector de unidad académica */}
-      <div
-        style={{
-          marginBottom: 14,
-          padding: 12,
-          border: "1px solid #eee",
-          borderRadius: 12,
-        }}
-      >
-        <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>
-          Unidad académica
-        </label>
-        <select
-          value={unidad}
-          onChange={(e) => setUnidad(e.target.value)}
-          style={{
-            padding: "8px 10px",
-            borderRadius: 8,
-            border: "1px solid #ddd",
-            minWidth: 320,
-          }}
-        >
-          <option value="">Unidad Académica UdeA</option>
-          {unidades.map((u) => (
-            <option key={u} value={u}>
-              {u}
-            </option>
-          ))}
-        </select>
-      </div>
+      <header className="panel hero-panel">
+        <p className="hero-kicker">Universidad de Antioquia</p>
+        <h1>Diagnostico de Internacionalizacion</h1>
+        <p className="hero-copy">
+          Instrumento para caracterizar el nivel de internacionalizacion por unidad academica.
+        </p>
+      </header>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-        <TabButton id="diagnostico">Diagnóstico</TabButton>
-        <TabButton id="resultados">Resultados</TabButton>
-      </div>
+      <section className="panel controls-panel">
+        <div className="field-block">
+          <label htmlFor="unidad-select">Unidad academica</label>
+          <select
+            id="unidad-select"
+            value={unidad}
+            onChange={(e) => setUnidad(e.target.value)}
+          >
+            <option value="">Seleccione una unidad academica</option>
+            {unidades.map((u) => (
+              <option key={u} value={u}>
+                {u}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Stats mini bar */}
-      <div
-        style={{
-          marginBottom: 14,
-          padding: 12,
-          border: "1px solid #eee",
-          borderRadius: 12,
-        }}
-      >
-        Respondidas: {stats.answered}/{stats.total} · Nivel: <b>{stats.nivel}</b>{" "}
-        · (Básica {stats.c1} / Transversal {stats.c2} / Sistema {stats.c3})
-      </div>
+        <div className="tabs-row">
+          <button
+            onClick={() => setTab("diagnostico")}
+            disabled={tab === "diagnostico" || !unidad}
+            className={`tab-button ${tab === "diagnostico" ? "is-active" : ""}`}
+            type="button"
+          >
+            Diagnostico
+          </button>
+          <button
+            onClick={() => setTab("resultados")}
+            disabled={tab === "resultados" || !unidad}
+            className={`tab-button ${tab === "resultados" ? "is-active" : ""}`}
+            type="button"
+          >
+            Resultados
+          </button>
+        </div>
+      </section>
+
+      <section className="stats-grid">
+        <article className="panel stat-card">
+          <span className="stat-label">Unidad</span>
+          <strong className="stat-value unit-text">{unidad || "Sin seleccionar"}</strong>
+        </article>
+
+        <article className="panel stat-card">
+          <span className="stat-label">Progreso</span>
+          <strong className="stat-value">{stats.answered}/{stats.total}</strong>
+          <div className="progress-track" aria-hidden="true">
+            <div className="progress-fill" style={{ width: `${stats.progreso}%` }} />
+          </div>
+        </article>
+
+        <article className="panel stat-card accent-green">
+          <span className="stat-label">Nivel actual</span>
+          <strong className="stat-value">{stats.nivel}</strong>
+          <span className="stat-meta">
+            Basica {stats.c1} | Transversal {stats.c2} | Sistema {stats.c3}
+          </span>
+        </article>
+      </section>
 
       {unidad === "Facultad de Artes" && (
-        <div
-          style={{
-            marginBottom: 14,
-            padding: 12,
-            border: "1px solid #eee",
-            borderRadius: 12,
-          }}
-        >
-          Para la Facultad de Artes, los indicadores no obligatorios no se
-          incluyen en el diagnóstico ni en los resultados.
+        <div className="panel note-box">
+          Para la Facultad de Artes, los indicadores no obligatorios no se incluyen en el diagnostico ni en los resultados.
         </div>
       )}
 
       {!unidad && (
-        <div
-          style={{
-            padding: 12,
-            border: "1px dashed #ddd",
-            borderRadius: 12,
-            marginBottom: 14,
-            background: "#fafafa",
-          }}
-        >
-          Selecciona una unidad académica para habilitar el diagnóstico.
+        <div className="panel notice-box">
+          Selecciona una unidad academica para habilitar Diagnostico y Resultados.
         </div>
       )}
 
-      {/* TAB: Diagnóstico (acordeón por eje) */}
       {tab === "diagnostico" && unidad && (
-        <div>
+        <section className="diagnostico-view">
+          <div id="diagnostico-top" />
           {Array.from(tree.entries()).map(([eje, byObj]) => (
-            <details
-              key={eje}
-              style={{
-                border: "1px solid #eee",
-                borderRadius: 12,
-                padding: 10,
-                marginBottom: 10,
-                background: "white",
-              }}
-            >
-              <summary style={{ cursor: "pointer", fontWeight: 800 }}>
-                {eje}
-              </summary>
+            <details key={eje} className="panel eje-card" open>
+              <summary className="eje-summary">{eje}</summary>
 
-              <div style={{ marginTop: 10 }}>
+              <div className="eje-content">
                 {Array.from(byObj.entries()).map(([objetivo, list]) => (
-                  <div
-                    key={`${eje}::${objetivo}`}
-                    style={{ marginBottom: 16 }}
-                  >
-                    <h3 style={{ margin: "8px 0" }}>{objetivo}</h3>
-
+                  <div key={`${eje}::${objetivo}`} className="objetivo-block">
+                    <h3>{objetivo}</h3>
                     {list.map((it) => (
                       <Indicator
                         key={it.id}
@@ -320,58 +312,49 @@ export default function App() {
               </div>
             </details>
           ))}
-        </div>
+          <button
+            type="button"
+            className="back-top-button"
+            onClick={scrollToDiagnosticoTop}
+          >
+            Volver arriba
+          </button>
+        </section>
       )}
 
-      {/* TAB: Resultados (radares + texto + pdf) */}
       {tab === "resultados" && unidad && (
-        <div>
-          {/* TODO lo que quieras en el PDF debe vivir dentro de #pdf */}
-          <div id="pdf" style={{ background: "white", padding: 16 }}>
-            <div
-              style={{
-                marginBottom: 14,
-                padding: 12,
-                border: "1px solid #eee",
-                borderRadius: 12,
-              }}
-            >
-              Respondidas: {stats.answered}/{stats.total} · Nivel: <b>{stats.nivel}</b>{" "}
-              · (Básica {stats.c1} / Transversal {stats.c2} / Sistema {stats.c3})
+        <section className="results-view">
+          <div
+            id="pdf"
+            className={`pdf-area ${isPdfExporting ? "pdf-exporting" : ""}`}
+          >
+            <div className="pdf-header">
+              <h2>Resultados del Diagnostico</h2>
+              <p>{unidad}</p>
+              <p>
+                Respondidas: {stats.answered}/{stats.total} | Nivel: {stats.nivel}
+              </p>
             </div>
 
-            <div
-              style={{
-                padding: 12,
-                border: "1px solid #eee",
-                borderRadius: 12,
-                marginBottom: 14,
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {textoNivel}
-            </div>
+            <div className="nivel-copy">{textoNivel}</div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: 12,
-                marginBottom: 14,
-              }}
-            >
-              {Array.from(tree.entries()).map(([eje, byObj]) => {
+            <div className="results-grid">
+              {orderedEjes.map(([eje, byObj]) => {
                 const indicators = Array.from(byObj.values()).flat();
-                const radarKey = `radar-${eje}-${unidad}-${indicators
+                const radarKey = `radar-${eje}-${unidad}-${isPdfExporting ? "pdf" : "screen"}-${indicators
                   .map((it) => it.id)
                   .join("-")}`;
+                const ejeColor = EJE_COLORS[eje] ?? "#01602D";
+
                 return (
-                  <div key={`wrap-${eje}`} style={{ breakInside: "avoid", pageBreakInside: "avoid" }}>
+                  <div key={`wrap-${eje}`} className="radar-wrap">
                     <RadarEje
                       key={radarKey}
                       titulo={eje}
                       indicators={indicators}
                       answers={answers}
+                      color={ejeColor}
+                      forPdf={isPdfExporting}
                     />
                   </div>
                 );
@@ -379,18 +362,10 @@ export default function App() {
             </div>
           </div>
 
-          <button
-            onClick={downloadPdf}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid #ddd",
-              cursor: "pointer",
-            }}
-          >
-            Descargar Diagnóstico
+          <button onClick={downloadPdf} className="download-button" type="button">
+            Descargar diagnostico
           </button>
-        </div>
+        </section>
       )}
     </div>
   );
