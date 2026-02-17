@@ -68,28 +68,28 @@ export default function App() {
     "Facultad de Artes",
     "Facultad de Ciencias Exactas y Naturales",
     "Facultad de Ciencias Sociales y Humanas",
-    "Facultad de Derecho y Ciencias Politicas",
-    "Instituto de Estudios Politicos",
-    "Facultad de Comunicaciones y Filologia",
+    "Facultad de Derecho y Ciencias Políticas",
+    "Instituto de Estudios Políticos",
+    "Facultad de Comunicaciones y Filología",
     "Escuela de Idiomas",
-    "Instituto de Filosofia",
+    "Instituto de Filosofía",
     "Facultad de Ciencias Economicas",
     "Instituto de Estudios Regionales",
-    "Corporacion Academica Ambiental",
-    "Facultad de Educacion",
-    "Facultad de Ingenieria",
+    "Corporación Académica Ambiental",
+    "Facultad de Educación",
+    "Facultad de Ingeniería",
     "Facultad de Medicina",
-    "Facultad de Odontologia",
+    "Facultad de Odontología",
     "Facultad de Ciencias Farmaceuticas y Alimentarias",
-    "Escuela de Microbiologia",
+    "Escuela de Microbiología",
     "Facultad de Ciencias Agrarias",
-    "Escuela Interamericana de Bibliotecologia",
-    "Direccion de Regionalizacion",
-    "Facultad de Enfermeria",
-    "Facultad Nacional de Salud Publica",
-    "Instituto Universitario de Educacion Fisica y Deporte",
-    "Escuela de Nutricion y Dietetica",
-    "Corporacion Academica Ciencias Basicas Biomedicas",
+    "Escuela Interamericana de Bibliotecología",
+    "Dirección de Regionalización",
+    "Facultad de Enfermería",
+    "Facultad Nacional de Salud Pública",
+    "Instituto Universitario de Educación Física y Deporte",
+    "Escuela de Nutrición y Dietética",
+    "Corporación Académica Ciencias Basicas Biomédicas",
   ];
 
   const [answers, setAnswers] = useState(() => {
@@ -317,13 +317,22 @@ export default function App() {
               </div>
             </details>
           ))}
-          <button
-            type="button"
-            className="back-top-button"
-            onClick={scrollToDiagnosticoTop}
-          >
-            Volver arriba
-          </button>
+          <div className="diagnostico-bottom-actions">
+            <button
+              type="button"
+              className="back-top-button"
+              onClick={scrollToDiagnosticoTop}
+            >
+              Volver arriba
+            </button>
+            <button
+              type="button"
+              className="go-results-button"
+              onClick={() => setTab("resultados")}
+            >
+              Resultados
+            </button>
+          </div>
         </section>
       )}
 
