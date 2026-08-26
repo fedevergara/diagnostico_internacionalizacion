@@ -27,27 +27,79 @@ const EJE_COLORS = {
   "Gestión Administrativa": "#F5333F",
 };
 
-function Indicator({ it, value, onPick }) {
+function createEmptyAnswers() {
+  return Object.fromEntries(items.map((it) => [it.id, 0]));
+}
+
+function groupItems(itemsToGroup) {
+  const byEje = new Map();
+
+  for (const it of itemsToGroup) {
+    const eje = it.eje ?? "Sin eje";
+    const obj = it.objetivo ?? "Sin objetivo";
+
+    if (!byEje.has(eje)) byEje.set(eje, new Map());
+    const byObj = byEje.get(eje);
+
+    if (!byObj.has(obj)) byObj.set(obj, []);
+    byObj.get(obj).push(it);
+  }
+
+  return byEje;
+}
+
+const diagnosticTree = groupItems(items);
+
+function Indicator({
+  it,
+  value,
+  onPick,
+  isApplicable,
+  onApplicableChange,
+}) {
+  const isOptional = it.obligatorio === false;
+
   return (
-    <article className="indicator-card">
+    <article
+      className={`indicator-card ${isApplicable ? "" : "is-not-applicable"}`}
+    >
       <header className="indicator-header">
         <h4 className="indicator-title">
           <span className="indicator-code">{it.indicador}</span>
           <span>{it.nombre}</span>
         </h4>
         <p className="indicator-formula">{it.formula}</p>
+
+        {isOptional && (
+          <div className="optional-controls">
+            <span className="optional-badge">Indicador adicional</span>
+            <label className="applicability-toggle">
+              <input
+                type="checkbox"
+                checked={isApplicable}
+                onChange={(event) => onApplicableChange(event.target.checked)}
+                aria-label={`${isApplicable ? "Marcar como no aplica" : "Incluir"}: ${it.nombre}`}
+              />
+              <span className="toggle-track" aria-hidden="true" />
+              <span className="toggle-text">
+                {isApplicable ? "Aplica" : "No aplica"}
+              </span>
+            </label>
+          </div>
+        )}
       </header>
 
       <div className="indicator-options">
         {LEVELS.map((level) => (
           <label
             key={`${it.id}-${level.id}`}
-            className={`indicator-option ${value === level.id ? "is-selected" : ""}`}
+            className={`indicator-option ${value === level.id ? "is-selected" : ""} ${isApplicable ? "" : "is-disabled"}`}
           >
             <input
               type="radio"
               name={`ind-${it.id}`}
               checked={value === level.id}
+              disabled={!isApplicable}
               onChange={() => onPick(level.id)}
             />
             <span className="option-title">{level.label}</span>
@@ -63,6 +115,7 @@ export default function App() {
   const [tab, setTab] = useState("diagnostico");
   const [unidad, setUnidad] = useState("");
   const [isPdfExporting, setIsPdfExporting] = useState(false);
+  const [notApplicableIds, setNotApplicableIds] = useState(() => new Set());
 
   const unidades = [
     "Facultad de Artes",
@@ -92,24 +145,31 @@ export default function App() {
     "Corporación Académica Ciencias Basicas Biomédicas",
   ];
 
-  const [answers, setAnswers] = useState(() => {
-    const init = {};
-    items.forEach((it) => {
-      init[it.id] = 0;
-    });
-    return init;
-  });
+  const [answers, setAnswers] = useState(createEmptyAnswers);
 
   const setAnswer = (id, value) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
+  const setItemApplicable = (id, isApplicable) => {
+    setNotApplicableIds((previousIds) => {
+      const nextIds = new Set(previousIds);
+      if (isApplicable) nextIds.delete(id);
+      else nextIds.add(id);
+      return nextIds;
+    });
+  };
+
+  const changeUnidad = (nextUnidad) => {
+    setUnidad(nextUnidad);
+    setAnswers(createEmptyAnswers());
+    setNotApplicableIds(new Set());
+    setTab("diagnostico");
+  };
+
   const activeItems = useMemo(() => {
-    if (unidad === "Facultad de Artes") {
-      return items.filter((it) => it.obligatorio !== false);
-    }
-    return items;
-  }, [unidad]);
+    return items.filter((it) => !notApplicableIds.has(it.id));
+  }, [notApplicableIds]);
 
   const stats = useMemo(() => {
     let c1 = 0;
@@ -140,25 +200,10 @@ export default function App() {
 
   const textoNivel = raw.niveles_texto?.[stats.nivel] ?? "";
 
-  const tree = useMemo(() => {
-    const byEje = new Map();
-
-    for (const it of activeItems) {
-      const eje = it.eje ?? "Sin eje";
-      const obj = it.objetivo ?? "Sin objetivo";
-
-      if (!byEje.has(eje)) byEje.set(eje, new Map());
-      const byObj = byEje.get(eje);
-
-      if (!byObj.has(obj)) byObj.set(obj, []);
-      byObj.get(obj).push(it);
-    }
-
-    return byEje;
-  }, [activeItems]);
+  const resultsTree = useMemo(() => groupItems(activeItems), [activeItems]);
 
   const orderedEjes = useMemo(() => {
-    const entries = Array.from(tree.entries());
+    const entries = Array.from(resultsTree.entries());
     const orderIndex = new Map(EJE_ORDER.map((eje, index) => [eje, index]));
 
     return entries.sort((a, b) => {
@@ -167,7 +212,7 @@ export default function App() {
       if (ai !== bi) return ai - bi;
       return a[0].localeCompare(b[0], "es");
     });
-  }, [tree]);
+  }, [resultsTree]);
 
   const downloadPdf = async () => {
     if (tab !== "resultados") setTab("resultados");
@@ -227,7 +272,7 @@ export default function App() {
           <select
             id="unidad-select"
             value={unidad}
-            onChange={(e) => setUnidad(e.target.value)}
+            onChange={(e) => changeUnidad(e.target.value)}
           >
             <option value="">Seleccione una Unidad Académica</option>
             {unidades.map((u) => (
@@ -281,9 +326,11 @@ export default function App() {
         </article>
       </section>
 
-      {unidad === "Facultad de Artes" && (
+      {unidad && (
         <div className="panel note-box">
-          Para la Facultad de Artes, los indicadores no obligatorios no se incluyen en el diagnostico ni en los resultados.
+          Los indicadores adicionales están incluidos por defecto. Si alguno no
+          corresponde a la Unidad Académica, márcalo como &quot;No aplica&quot; para
+          excluirlo del diagnóstico y los resultados.
         </div>
       )}
 
@@ -296,7 +343,7 @@ export default function App() {
       {tab === "diagnostico" && unidad && (
         <section className="diagnostico-view">
           <div id="diagnostico-top" />
-          {Array.from(tree.entries()).map(([eje, byObj]) => (
+          {Array.from(diagnosticTree.entries()).map(([eje, byObj]) => (
             <details key={eje} className="panel eje-card">
               <summary className="eje-summary">{eje}</summary>
 
@@ -310,6 +357,10 @@ export default function App() {
                         it={it}
                         value={answers[it.id]}
                         onPick={(v) => setAnswer(it.id, v)}
+                        isApplicable={!notApplicableIds.has(it.id)}
+                        onApplicableChange={(isApplicable) =>
+                          setItemApplicable(it.id, isApplicable)
+                        }
                       />
                     ))}
                   </div>

@@ -283,6 +283,13 @@
   border-radius: 14px;
   padding: 0.9rem;
   background: #ffffff;
+  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.indicator-card.is-not-applicable {
+  border-color: rgba(67, 81, 73, 0.3);
+  border-style: dashed;
+  background: #f5f7f6;
 }
 
 .indicator-header {
@@ -308,6 +315,82 @@
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.87rem;
+}
+
+.optional-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(0, 116, 115, 0.14);
+}
+
+.optional-badge {
+  color: var(--u-cyan);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.applicability-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--u-primary-900);
+}
+
+.applicability-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.toggle-track {
+  position: relative;
+  width: 46px;
+  height: 25px;
+  border-radius: 999px;
+  background: #8c9891;
+  box-shadow: inset 0 0 0 1px rgba(16, 35, 25, 0.16);
+  transition: background 0.2s ease;
+}
+
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  left: 3px;
+  top: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(16, 35, 25, 0.28);
+  transition: transform 0.2s ease;
+}
+
+.applicability-toggle input:checked + .toggle-track {
+  background: var(--u-primary-700);
+}
+
+.applicability-toggle input:checked + .toggle-track::after {
+  transform: translateX(21px);
+}
+
+.applicability-toggle input:focus-visible + .toggle-track {
+  outline: 3px solid rgba(147, 213, 0, 0.45);
+  outline-offset: 2px;
+}
+
+.toggle-text {
+  min-width: 4.5rem;
+  font-size: 0.86rem;
 }
 
 .indicator-options {
@@ -347,6 +430,11 @@
     rgba(147, 213, 0, 0.2),
     rgba(61, 174, 43, 0.1)
   );
+}
+
+.indicator-option.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .option-title {
