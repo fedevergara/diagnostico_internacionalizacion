@@ -406,18 +406,26 @@ export default function App() {
             <div className="results-grid">
               {orderedEjes.map(([eje, byObj]) => {
                 const indicators = Array.from(byObj.values()).flat();
+                const summaryIndicators = Array.from(
+                  diagnosticTree.get(eje)?.values() ?? []
+                ).flat();
                 const radarKey = `radar-${eje}-${unidad}-${isPdfExporting ? "pdf" : "screen"}-${indicators
                   .map((it) => it.id)
                   .join("-")}`;
                 const ejeColor = EJE_COLORS[eje] ?? "#01602D";
 
                 return (
-                  <div key={`wrap-${eje}`} className="radar-wrap">
+                  <div
+                    key={`wrap-${eje}`}
+                    className={`radar-wrap ${indicators.length >= 15 ? "is-dense" : ""}`}
+                  >
                     <RadarEje
                       key={radarKey}
                       titulo={eje}
                       indicators={indicators}
+                      summaryIndicators={summaryIndicators}
                       answers={answers}
+                      notApplicableIds={notApplicableIds}
                       color={ejeColor}
                       forPdf={isPdfExporting}
                     />

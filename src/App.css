@@ -476,13 +476,21 @@
 .results-grid {
   margin-top: 0.75rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 0.7rem;
 }
 
 .radar-wrap {
   break-inside: avoid;
   page-break-inside: avoid;
+}
+
+.radar-wrap.is-dense {
+  grid-column: 1 / -1;
+}
+
+.radar-wrap.is-dense .radar-canvas {
+  height: 520px;
 }
 
 .radar-card {
@@ -506,9 +514,93 @@
   height: 360px;
 }
 
+.responses-summary {
+  display: none;
+  margin-top: 0.65rem;
+  border: 1px solid var(--radar-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.responses-summary-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  color: var(--radar-color);
+  background: var(--radar-color-soft);
+  border-bottom: 1px solid var(--radar-color);
+}
+
+.responses-summary-header h5,
+.responses-summary-header p {
+  margin: 0;
+}
+
+.responses-summary-header h5 {
+  font-size: 0.9rem;
+}
+
+.responses-summary-header p {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.responses-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(16, 35, 25, 0.1);
+}
+
+.response-summary-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.48rem;
+  background: #ffffff;
+  border-left: 3px solid var(--radar-color);
+}
+
+.response-summary-name {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.response-summary-value {
+  min-width: 4.6rem;
+  padding: 0.18rem 0.4rem;
+  border: 1px solid var(--radar-color);
+  border-radius: 999px;
+  color: var(--radar-color);
+  background: var(--radar-color-soft);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.response-summary-value.is-level-0,
+.response-summary-value.is-not-applicable {
+  color: #536159;
+  border-color: #aab3ad;
+  background: #f0f3f1;
+}
+
 .pdf-area.pdf-exporting .results-grid {
   grid-template-columns: 1fr;
   gap: 0.95rem;
+}
+
+.pdf-area.pdf-exporting {
+  width: 720px;
 }
 
 .pdf-area.pdf-exporting .radar-card {
@@ -520,10 +612,19 @@
   font-size: 1.15rem;
 }
 
+.pdf-area.pdf-exporting .responses-summary {
+  display: block;
+}
+
 .pdf-area.pdf-exporting .radar-canvas {
   height: 440px;
   max-width: 560px;
   margin: 0 auto;
+}
+
+.pdf-area.pdf-exporting .radar-wrap.is-dense .radar-canvas {
+  height: 520px;
+  max-width: 100%;
 }
 
 .download-button {
