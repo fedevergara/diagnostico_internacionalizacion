@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import html2pdf from "html2pdf.js";
 import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
@@ -27,8 +27,123 @@ const EJE_COLORS = {
   "Gestión Administrativa": "#F5333F",
 };
 
+const STORAGE_KEY = "diagnostico-internacionalizacion";
+const STORAGE_VERSION = 1;
+
+const UNIDADES = [
+  "Facultad de Artes",
+  "Facultad de Ciencias Exactas y Naturales",
+  "Facultad de Ciencias Sociales y Humanas",
+  "Facultad de Derecho y Ciencias Políticas",
+  "Instituto de Estudios Políticos",
+  "Facultad de Comunicaciones y Filología",
+  "Escuela de Idiomas",
+  "Instituto de Filosofía",
+  "Facultad de Ciencias Economicas",
+  "Instituto de Estudios Regionales",
+  "Corporación Académica Ambiental",
+  "Facultad de Educación",
+  "Facultad de Ingeniería",
+  "Facultad de Medicina",
+  "Facultad de Odontología",
+  "Facultad de Ciencias Farmaceuticas y Alimentarias",
+  "Escuela de Microbiología",
+  "Facultad de Ciencias Agrarias",
+  "Escuela Interamericana de Bibliotecología",
+  "Dirección de Regionalización",
+  "Facultad de Enfermería",
+  "Facultad Nacional de Salud Pública",
+  "Instituto Universitario de Educación Física y Deporte",
+  "Escuela de Nutrición y Dietética",
+  "Corporación Académica Ciencias Basicas Biomédicas",
+];
+
+const optionalItemIds = new Set(
+  items.filter((it) => it.obligatorio === false).map((it) => it.id)
+);
+
 function createEmptyAnswers() {
   return Object.fromEntries(items.map((it) => [it.id, 0]));
+}
+
+function createEmptyStorage() {
+  return { version: STORAGE_VERSION, selectedUnit: "", units: {} };
+}
+
+function readStoredDiagnoses() {
+  if (typeof window === "undefined") return createEmptyStorage();
+
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
+    if (
+      parsed?.version !== STORAGE_VERSION ||
+      !parsed.units ||
+      typeof parsed.units !== "object"
+    ) {
+      return createEmptyStorage();
+    }
+    return parsed;
+  } catch {
+    return createEmptyStorage();
+  }
+}
+
+function loadUnitProgress(unit, storedDiagnoses = readStoredDiagnoses()) {
+  const answers = createEmptyAnswers();
+  const storedProgress = storedDiagnoses.units?.[unit];
+
+  if (storedProgress?.answers && typeof storedProgress.answers === "object") {
+    for (const it of items) {
+      const value = storedProgress.answers[it.id];
+      if ([1, 2, 3].includes(value)) answers[it.id] = value;
+    }
+  }
+
+  const notApplicableIds = new Set(
+    Array.isArray(storedProgress?.notApplicableIds)
+      ? storedProgress.notApplicableIds
+          .map(String)
+          .filter((id) => optionalItemIds.has(id))
+      : []
+  );
+
+  return { answers, notApplicableIds };
+}
+
+function loadInitialSession() {
+  const storedDiagnoses = readStoredDiagnoses();
+  const unidad = UNIDADES.includes(storedDiagnoses.selectedUnit)
+    ? storedDiagnoses.selectedUnit
+    : "";
+
+  return { unidad, ...loadUnitProgress(unidad, storedDiagnoses) };
+}
+
+function storeProgress(unidad, answers, notApplicableIds) {
+  if (typeof window === "undefined") return;
+
+  try {
+    const storedDiagnoses = readStoredDiagnoses();
+    const units = { ...storedDiagnoses.units };
+
+    if (unidad) {
+      units[unidad] = {
+        answers,
+        notApplicableIds: Array.from(notApplicableIds),
+      };
+    }
+
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        version: STORAGE_VERSION,
+        selectedUnit: unidad,
+        units,
+      })
+    );
+  } catch {
+    // La aplicación sigue funcionando si el navegador bloquea localStorage.
+  }
 }
 
 function groupItems(itemsToGroup) {
@@ -112,40 +227,18 @@ function Indicator({
 }
 
 export default function App() {
+  const [initialSession] = useState(loadInitialSession);
   const [tab, setTab] = useState("diagnostico");
-  const [unidad, setUnidad] = useState("");
+  const [unidad, setUnidad] = useState(initialSession.unidad);
   const [isPdfExporting, setIsPdfExporting] = useState(false);
-  const [notApplicableIds, setNotApplicableIds] = useState(() => new Set());
+  const [notApplicableIds, setNotApplicableIds] = useState(
+    initialSession.notApplicableIds
+  );
+  const [answers, setAnswers] = useState(initialSession.answers);
 
-  const unidades = [
-    "Facultad de Artes",
-    "Facultad de Ciencias Exactas y Naturales",
-    "Facultad de Ciencias Sociales y Humanas",
-    "Facultad de Derecho y Ciencias Políticas",
-    "Instituto de Estudios Políticos",
-    "Facultad de Comunicaciones y Filología",
-    "Escuela de Idiomas",
-    "Instituto de Filosofía",
-    "Facultad de Ciencias Economicas",
-    "Instituto de Estudios Regionales",
-    "Corporación Académica Ambiental",
-    "Facultad de Educación",
-    "Facultad de Ingeniería",
-    "Facultad de Medicina",
-    "Facultad de Odontología",
-    "Facultad de Ciencias Farmaceuticas y Alimentarias",
-    "Escuela de Microbiología",
-    "Facultad de Ciencias Agrarias",
-    "Escuela Interamericana de Bibliotecología",
-    "Dirección de Regionalización",
-    "Facultad de Enfermería",
-    "Facultad Nacional de Salud Pública",
-    "Instituto Universitario de Educación Física y Deporte",
-    "Escuela de Nutrición y Dietética",
-    "Corporación Académica Ciencias Basicas Biomédicas",
-  ];
-
-  const [answers, setAnswers] = useState(createEmptyAnswers);
+  useEffect(() => {
+    storeProgress(unidad, answers, notApplicableIds);
+  }, [unidad, answers, notApplicableIds]);
 
   const setAnswer = (id, value) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -161,7 +254,25 @@ export default function App() {
   };
 
   const changeUnidad = (nextUnidad) => {
+    const nextProgress = loadUnitProgress(nextUnidad);
     setUnidad(nextUnidad);
+    setAnswers(nextProgress.answers);
+    setNotApplicableIds(nextProgress.notApplicableIds);
+    setTab("diagnostico");
+  };
+
+  const hasProgress =
+    Object.values(answers).some((value) => value > 0) ||
+    notApplicableIds.size > 0;
+
+  const clearProgress = () => {
+    if (!unidad || !hasProgress) return;
+
+    const shouldClear = window.confirm(
+      `¿Deseas borrar todas las respuestas guardadas para ${unidad}?`
+    );
+    if (!shouldClear) return;
+
     setAnswers(createEmptyAnswers());
     setNotApplicableIds(new Set());
     setTab("diagnostico");
@@ -275,12 +386,15 @@ export default function App() {
             onChange={(e) => changeUnidad(e.target.value)}
           >
             <option value="">Seleccione una Unidad Académica</option>
-            {unidades.map((u) => (
+            {UNIDADES.map((u) => (
               <option key={u} value={u}>
                 {u}
               </option>
             ))}
           </select>
+          <span className="storage-note">
+            El progreso se guarda automáticamente en este navegador.
+          </span>
         </div>
 
         <div className="tabs-row">
@@ -299,6 +413,14 @@ export default function App() {
             type="button"
           >
             Resultados
+          </button>
+          <button
+            onClick={clearProgress}
+            disabled={!unidad || !hasProgress}
+            className="clear-button"
+            type="button"
+          >
+            Limpiar respuestas
           </button>
         </div>
       </section>
