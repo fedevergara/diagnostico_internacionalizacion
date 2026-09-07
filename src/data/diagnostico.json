@@ -550,7 +550,7 @@
         "transversal": "En proceso 1 desarrollo de muestras de obras artísticas y culturales  en conjunto con artistas extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción).",
         "sistema": "1 desarrollo de muestras de obras artísticas y culturales  en conjunto con artistas extranjeros  (aplica para unidades académicas que por su naturaleza tiene este tipo de producción)."
       },
-      "obligatorio": true
+      "obligatorio": false
     },
     {
       "row": 47,
