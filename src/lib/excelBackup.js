@@ -378,7 +378,7 @@ export async function downloadAnswersExcel({
 // ---------------------------------------------------------------- Plantilla
 
 /**
- * Plantilla en blanco y simple para diligenciar sin conexión y luego cargar.
+ * Plantilla en blanco para diligenciar sin conexión y luego cargar.
  * Usa las mismas columnas clave (ID, Aplica, Respuesta) que el respaldo, así
  * que el mismo importador acepta ambos archivos.
  */
@@ -398,7 +398,7 @@ export async function downloadTemplateExcel({ items, ejeColors }) {
     ["Plantilla · Diagnóstico de internacionalización", { bold: true, size: 15, color: { argb: COLOR.teal } }],
     [""],
     ["1. En la hoja «Respuestas», elija en la columna «Respuesta» el nivel de cada indicador: Bajo, Medio o Alto."],
-    ["2. Para ver qué significa cada nivel, pulse el botón «+» sobre las columnas: se despliegan los criterios."],
+    ["2. Las columnas «Criterio Bajo», «Criterio Medio» y «Criterio Alto» describen qué significa cada nivel."],
     ["3. «Aplica»: deje «Sí». Solo los indicadores adicionales pueden marcarse «No» si no corresponden a la unidad."],
     ["4. No modifique la columna «ID» ni elimine filas. Guarde el archivo como Excel (.xlsx)."],
     ["5. En la herramienta, pulse «Cargar Excel» › «Seleccionar archivo» y elija la unidad académica."],
@@ -409,14 +409,9 @@ export async function downloadTemplateExcel({ items, ejeColors }) {
     row.height = font ? 26 : 20;
   });
 
-  // Hoja de respuestas: 5 columnas visibles + criterios plegados.
+  // Hoja de respuestas: columnas clave + criterios de cada nivel.
   const ws = wb.addWorksheet("Respuestas", {
     views: [{ state: "frozen", ySplit: 1, xSplit: 0 }],
-    // outlineLevelCol=1 hace que Excel muestre el botón «+» del grupo.
-    properties: {
-      outlineLevelCol: 1,
-      outlineProperties: { summaryBelow: false, summaryRight: false },
-    },
   });
   ws.columns = [
     { header: "ID", key: "id", width: 6 },
@@ -424,9 +419,9 @@ export async function downloadTemplateExcel({ items, ejeColors }) {
     { header: "Indicador", key: "nombre", width: 48 },
     { header: "Aplica", key: "aplica", width: 10 },
     { header: "Respuesta", key: "respuesta", width: 15 },
-    { header: "Criterio Bajo", key: "bajo", width: 45, outlineLevel: 1, hidden: true },
-    { header: "Criterio Medio", key: "medio", width: 45, outlineLevel: 1, hidden: true },
-    { header: "Criterio Alto", key: "alto", width: 45, outlineLevel: 1, hidden: true },
+    { header: "Criterio Bajo", key: "bajo", width: 42 },
+    { header: "Criterio Medio", key: "medio", width: 42 },
+    { header: "Criterio Alto", key: "alto", width: 42 },
   ];
   styleHeaderRow(ws.getRow(1), [4, 5]);
 
