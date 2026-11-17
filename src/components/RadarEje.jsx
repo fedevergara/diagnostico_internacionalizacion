@@ -21,13 +21,14 @@ export default function RadarEje({ titulo, indicators, answers, color }) {
 
   return (
     <div
-      className="panel radar-card"
+      className="card radar-card"
       style={{
         "--radar-color": color,
         "--radar-color-soft": hexToRgba(color, 0.08),
       }}
     >
-      <h4 className="radar-title" style={{ color }}>
+      <h4 className="card-title radar-title">
+        <span className="eje-dot" aria-hidden="true" />
         {titulo}
       </h4>
       <div className="radar-canvas">

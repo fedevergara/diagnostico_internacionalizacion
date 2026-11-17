@@ -1,5 +1,9 @@
 :root {
-  font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5715;
+  color: #262626;
+  background: #f5f5f5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -19,11 +23,7 @@ body,
 
 body {
   min-width: 320px;
-  color: #102319;
-  background:
-    linear-gradient(160deg, #f4faf6 0%, #ecf6f1 45%, #eef7fb 100%),
-    radial-gradient(circle at 18% 8%, rgba(147, 213, 0, 0.12), transparent 45%),
-    radial-gradient(circle at 90% 86%, rgba(0, 114, 151, 0.12), transparent 40%);
+  background: #f5f5f5;
 }
 
 button,

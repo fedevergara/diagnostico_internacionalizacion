@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
 import RadarEje from "./components/RadarEje";
+import { hexToRgba } from "./lib/radar";
+import shieldUrl from "./assets/udea-shield-white.png";
 import "./App.css";
 
 const items = normalizeItems(raw.items);
@@ -365,25 +367,30 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <div className="page-glow page-glow-a" />
-      <div className="page-glow page-glow-b" />
-
-      <header className="panel hero-panel">
-        <p className="hero-kicker">Universidad de Antioquia</p>
-        <h1>DIAGNÓSTICO - PLANES DE INTERNACIONALIZACIÓN</h1>
-        <p className="hero-copy">
-          Para facilitarle a las Unidades Académicas la reflexión sobre su estado en materia de internacionalización, se asociaron los ejes,
-          objetivos e indicadores a los escenarios, determinando unos niveles de desarrollo de los indicadores, como se muestra en la siguiente herramienta.
-        </p>
-        <p className="hero-copy">
-          El propósito es que cada unidad pueda realizar un diagnóstico de su estado actual, con base en la información que tenga disponible, y a partir de esto,
-          identificar los aspectos a fortalecer para avanzar en su proceso de internacionalización.
-        </p>
+      <header className="hero">
+        <div className="hero-copy">
+          <h1>Diagnóstico de internacionalización</h1>
+          <div className="hero-brand">
+            <span className="hero-brand-main">Planes de internacionalización</span>
+            <span className="hero-brand-sub">Universidad de Antioquia</span>
+          </div>
+          <p className="hero-text">
+            Para facilitarle a las Unidades Académicas la reflexión sobre su
+            estado en materia de internacionalización, se asociaron los ejes,
+            objetivos e indicadores a los escenarios, determinando unos niveles
+            de desarrollo de los indicadores, como se muestra en la siguiente
+            herramienta. El propósito es que cada unidad pueda realizar un
+            diagnóstico de su estado actual, con base en la información que
+            tenga disponible, y a partir de esto, identificar los aspectos a
+            fortalecer para avanzar en su proceso de internacionalización.
+          </p>
+        </div>
+        <img className="hero-logo" src={shieldUrl} alt="Universidad de Antioquia" />
       </header>
 
-      <section className="panel controls-panel">
+      <section className="module-nav">
         <div className="field-block">
-          <label htmlFor="unidad-select">Unidad academica</label>
+          <label htmlFor="unidad-select">Unidad académica</label>
           <select
             id="unidad-select"
             value={unidad}
@@ -401,27 +408,33 @@ export default function App() {
           </span>
         </div>
 
-        <div className="tabs-row">
-          <button
-            onClick={() => setTab("diagnostico")}
-            disabled={tab === "diagnostico" || !unidad}
-            className={`tab-button ${tab === "diagnostico" ? "is-active" : ""}`}
-            type="button"
-          >
-            Diagnostico
-          </button>
-          <button
-            onClick={() => setTab("resultados")}
-            disabled={tab === "resultados" || !unidad}
-            className={`tab-button ${tab === "resultados" ? "is-active" : ""}`}
-            type="button"
-          >
-            Resultados
-          </button>
+        <div className="nav-actions">
+          <div className="segmented" role="tablist" aria-label="Secciones">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === "diagnostico"}
+              className={tab === "diagnostico" ? "is-active" : ""}
+              onClick={() => setTab("diagnostico")}
+              disabled={!unidad}
+            >
+              Diagnóstico
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === "resultados"}
+              className={tab === "resultados" ? "is-active" : ""}
+              onClick={() => setTab("resultados")}
+              disabled={!unidad}
+            >
+              Resultados
+            </button>
+          </div>
           <button
             onClick={clearProgress}
             disabled={!unidad || !hasProgress}
-            className="clear-button"
+            className="ghost-button danger"
             type="button"
           >
             Limpiar respuestas
@@ -429,85 +442,117 @@ export default function App() {
         </div>
       </section>
 
-      <section className="stats-grid">
-        <article className="panel stat-card">
-          <span className="stat-label">Unidad Académica</span>
-          <strong className="stat-value unit-text">{unidad || "Sin seleccionar"}</strong>
+      <section className="kpi-grid">
+        <article className="kpi" style={{ "--kpi-color": "#087f78" }}>
+          <span className="kpi-label">Unidad académica</span>
+          <strong className="kpi-value kpi-value-text">
+            {unidad || "Sin seleccionar"}
+          </strong>
         </article>
 
-        <article className="panel stat-card">
-          <span className="stat-label">Progreso</span>
-          <strong className="stat-value">{stats.answered}/{stats.total}</strong>
+        <article className="kpi" style={{ "--kpi-color": "#2384a5" }}>
+          <span className="kpi-label">Progreso</span>
+          <strong className="kpi-value">
+            {stats.answered}
+            <small>/{stats.total}</small>
+          </strong>
           <div className="progress-track" aria-hidden="true">
             <div className="progress-fill" style={{ width: `${stats.progreso}%` }} />
           </div>
         </article>
 
-        <article className="panel stat-card accent-green">
-          <span className="stat-label">Nivel actual</span>
-          <strong className="stat-value">{stats.nivel}</strong>
-          <span className="stat-meta">
-            Bajo {stats.c1} | Medio {stats.c2} | Alto {stats.c3}
+        <article className="kpi" style={{ "--kpi-color": "#21a179" }}>
+          <span className="kpi-label">Nivel actual</span>
+          <strong className="kpi-value">{NIVEL_LABELS[stats.nivel]}</strong>
+          <span className="kpi-note">
+            <span>
+              Bajo <strong>{stats.c1}</strong>
+            </span>
+            <span>
+              Medio <strong>{stats.c2}</strong>
+            </span>
+            <span>
+              Alto <strong>{stats.c3}</strong>
+            </span>
           </span>
         </article>
       </section>
 
-      {unidad && (
-        <div className="panel note-box">
+      {unidad ? (
+        <div className="info-strip">
           Los indicadores adicionales están incluidos por defecto. Si alguno no
           corresponde a la Unidad Académica, márcalo como &quot;No aplica&quot; para
           excluirlo del diagnóstico y los resultados.
         </div>
-      )}
-
-      {!unidad && (
-        <div className="panel notice-box">
-          Selecciona una Unidad Académica para habilitar Diagnostico y Resultados.
+      ) : (
+        <div className="info-strip is-warning">
+          Selecciona una Unidad Académica para habilitar Diagnóstico y Resultados.
         </div>
       )}
 
       {tab === "diagnostico" && unidad && (
         <section className="diagnostico-view">
           <div id="diagnostico-top" />
-          {Array.from(diagnosticTree.entries()).map(([eje, byObj]) => (
-            <details key={eje} className="panel eje-card">
-              <summary className="eje-summary">{eje}</summary>
+          {Array.from(diagnosticTree.entries()).map(([eje, byObj]) => {
+            const ejeItems = Array.from(byObj.values()).flat();
+            const applicable = ejeItems.filter((it) => !notApplicableIds.has(it.id));
+            const answeredCount = applicable.filter((it) => answers[it.id] > 0).length;
+            const ejeColor = EJE_COLORS[eje] ?? "#087f78";
 
-              <div className="eje-content">
-                {Array.from(byObj.entries()).map(([objetivo, list]) => (
-                  <div key={`${eje}::${objetivo}`} className="objetivo-block">
-                    <h3>{objetivo}</h3>
-                    {list.map((it) => (
-                      <Indicator
-                        key={it.id}
-                        it={it}
-                        value={answers[it.id]}
-                        onPick={(v) => setAnswer(it.id, v)}
-                        isApplicable={!notApplicableIds.has(it.id)}
-                        onApplicableChange={(isApplicable) =>
-                          setItemApplicable(it.id, isApplicable)
-                        }
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </details>
-          ))}
-          <div className="diagnostico-bottom-actions">
+            return (
+              <details
+                key={eje}
+                className="eje-card"
+                style={{
+                  "--eje-color": ejeColor,
+                  "--eje-soft": hexToRgba(ejeColor, 0.07),
+                }}
+              >
+                <summary className="eje-summary">
+                  <span className="eje-name">{eje}</span>
+                  <span
+                    className={`eje-count ${answeredCount === applicable.length ? "is-done" : ""}`}
+                  >
+                    {answeredCount}/{applicable.length} respondidos
+                  </span>
+                </summary>
+
+                <div className="eje-content">
+                  {Array.from(byObj.entries()).map(([objetivo, list]) => (
+                    <div key={`${eje}::${objetivo}`} className="objetivo-block">
+                      <h3>{objetivo}</h3>
+                      {list.map((it) => (
+                        <Indicator
+                          key={it.id}
+                          it={it}
+                          value={answers[it.id]}
+                          onPick={(v) => setAnswer(it.id, v)}
+                          isApplicable={!notApplicableIds.has(it.id)}
+                          onApplicableChange={(isApplicable) =>
+                            setItemApplicable(it.id, isApplicable)
+                          }
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            );
+          })}
+          <div className="bottom-actions">
             <button
               type="button"
-              className="back-top-button"
+              className="ghost-button"
               onClick={scrollToDiagnosticoTop}
             >
               Volver arriba
             </button>
             <button
               type="button"
-              className="go-results-button"
+              className="primary-button"
               onClick={() => setTab("resultados")}
             >
-              Resultados
+              Ver resultados
             </button>
           </div>
         </section>
@@ -515,54 +560,55 @@ export default function App() {
 
       {tab === "resultados" && unidad && (
         <section className="results-view">
-          <div id="pdf" className="pdf-area">
-            <div className="pdf-header">
-              <h2>Resultados del Diagnóstico</h2>
-              <p>{unidad}</p>
-              <p>
-                Respondidas: {stats.answered}/{stats.total} | Nivel: {NIVEL_LABELS[stats.nivel]}
-              </p>
+          <div className="card results-header">
+            <div className="results-heading">
+              <div>
+                <span className="eyebrow">Resultados del diagnóstico</span>
+                <h2>{unidad}</h2>
+                <p>
+                  Respondidas {stats.answered}/{stats.total} · Nivel{" "}
+                  <strong>{NIVEL_LABELS[stats.nivel]}</strong>
+                </p>
+              </div>
+              <div className="download-row">
+                <button
+                  onClick={downloadPdf}
+                  className="primary-button"
+                  type="button"
+                  disabled={pdfStatus === "working"}
+                >
+                  {pdfStatus === "working" ? "Generando PDF…" : "Descargar diagnóstico"}
+                </button>
+              </div>
             </div>
-
-            <div className="nivel-copy">{textoNivel}</div>
-
-            <div className="results-grid">
-              {orderedEjes.map(([eje, byObj]) => {
-                const indicators = Array.from(byObj.values()).flat();
-                const ejeColor = EJE_COLORS[eje] ?? "#01602D";
-
-                return (
-                  <div
-                    key={`wrap-${eje}`}
-                    className={`radar-wrap ${indicators.length >= 15 ? "is-dense" : ""}`}
-                  >
-                    <RadarEje
-                      titulo={eje}
-                      indicators={indicators}
-                      answers={answers}
-                      color={ejeColor}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="download-row">
-            <button
-              onClick={downloadPdf}
-              className="download-button"
-              type="button"
-              disabled={pdfStatus === "working"}
-            >
-              {pdfStatus === "working" ? "Generando PDF…" : "Descargar diagnóstico"}
-            </button>
             {pdfStatus === "error" && (
-              <span className="download-error" role="alert">
+              <p className="download-error" role="alert">
                 No se pudo generar el PDF. Recarga la página e inténtalo de
                 nuevo; tus respuestas están guardadas.
-              </span>
+              </p>
             )}
+            <div className="nivel-copy">{textoNivel}</div>
+          </div>
+
+          <div className="results-grid">
+            {orderedEjes.map(([eje, byObj]) => {
+              const indicators = Array.from(byObj.values()).flat();
+              const ejeColor = EJE_COLORS[eje] ?? "#087f78";
+
+              return (
+                <div
+                  key={`wrap-${eje}`}
+                  className={`radar-wrap ${indicators.length >= 15 ? "is-dense" : ""}`}
+                >
+                  <RadarEje
+                    titulo={eje}
+                    indicators={indicators}
+                    answers={answers}
+                    color={ejeColor}
+                  />
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
