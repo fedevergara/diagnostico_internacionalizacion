@@ -3,6 +3,7 @@ import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
 import RadarEje from "./components/RadarEje";
 import ImportDialog from "./components/ImportDialog";
+import LoadExcelDialog from "./components/LoadExcelDialog";
 import { hexToRgba } from "./lib/radar";
 import shieldUrl from "./assets/udea-shield-white.png";
 import "./App.css";
@@ -247,6 +248,7 @@ export default function App() {
   const [downloadState, setDownloadState] = useState({ status: "idle" });
   const [importBusy, setImportBusy] = useState(false);
   const [importPreview, setImportPreview] = useState(null);
+  const [loadMenuOpen, setLoadMenuOpen] = useState(false);
   const [importMessage, setImportMessage] = useState(null);
   const importInputRef = useRef(null);
   const [notApplicableIds, setNotApplicableIds] = useState(
@@ -444,6 +446,17 @@ export default function App() {
   };
 
   const cancelImport = useCallback(() => setImportPreview(null), []);
+  const closeLoadMenu = useCallback(() => setLoadMenuOpen(false), []);
+
+  const downloadTemplate = async () => {
+    const { downloadTemplateExcel } = await import("./lib/excelBackup");
+    await downloadTemplateExcel({ items, ejeColors: EJE_COLORS });
+  };
+
+  const selectImportFile = () => {
+    setLoadMenuOpen(false);
+    importInputRef.current?.click();
+  };
 
   const isDownloading = downloadState.status === "working";
 
@@ -521,7 +534,7 @@ export default function App() {
           <button
             type="button"
             className="ghost-button"
-            onClick={() => importInputRef.current?.click()}
+            onClick={() => setLoadMenuOpen(true)}
             disabled={importBusy}
             title="Recupera un diagnóstico a partir del Excel de respuestas descargado"
           >
@@ -761,6 +774,14 @@ export default function App() {
             })}
           </div>
         </section>
+      )}
+
+      {loadMenuOpen && (
+        <LoadExcelDialog
+          onDownloadTemplate={downloadTemplate}
+          onSelectFile={selectImportFile}
+          onClose={closeLoadMenu}
+        />
       )}
 
       {importPreview && (

@@ -375,6 +375,117 @@ export async function downloadAnswersExcel({
   saveBlob(new Blob([buffer], { type: XLSX_MIME }), `${baseFileName(unidad)}-respuestas.xlsx`);
 }
 
+// ---------------------------------------------------------------- Plantilla
+
+/**
+ * Plantilla en blanco y simple para diligenciar sin conexión y luego cargar.
+ * Usa las mismas columnas clave (ID, Aplica, Respuesta) que el respaldo, así
+ * que el mismo importador acepta ambos archivos.
+ */
+export async function downloadTemplateExcel({ items, ejeColors }) {
+  const now = new Date();
+  const wb = new ExcelJS.Workbook();
+  wb.creator = "Diagnóstico de internacionalización · Universidad de Antioquia";
+  wb.created = now;
+
+  // Instrucciones breves.
+  const readme = wb.addWorksheet("Instrucciones", {
+    properties: { tabColor: { argb: COLOR.teal } },
+    views: [{ showGridLines: false }],
+  });
+  readme.getColumn(1).width = 110;
+  [
+    ["Plantilla · Diagnóstico de internacionalización", { bold: true, size: 15, color: { argb: COLOR.teal } }],
+    [""],
+    ["1. En la hoja «Respuestas», elija en la columna «Respuesta» el nivel de cada indicador: Bajo, Medio o Alto."],
+    ["2. Para ver qué significa cada nivel, pulse el botón «+» sobre las columnas: se despliegan los criterios."],
+    ["3. «Aplica»: deje «Sí». Solo los indicadores adicionales pueden marcarse «No» si no corresponden a la unidad."],
+    ["4. No modifique la columna «ID» ni elimine filas. Guarde el archivo como Excel (.xlsx)."],
+    ["5. En la herramienta, pulse «Cargar Excel» › «Seleccionar archivo» y elija la unidad académica."],
+  ].forEach(([text, font]) => {
+    const row = readme.addRow([text]);
+    row.getCell(1).font = font ?? { size: 11, color: { argb: COLOR.ink } };
+    row.getCell(1).alignment = { wrapText: true, vertical: "middle" };
+    row.height = font ? 26 : 20;
+  });
+
+  // Hoja de respuestas: 5 columnas visibles + criterios plegados.
+  const ws = wb.addWorksheet("Respuestas", {
+    views: [{ state: "frozen", ySplit: 1, xSplit: 0 }],
+    // outlineLevelCol=1 hace que Excel muestre el botón «+» del grupo.
+    properties: {
+      outlineLevelCol: 1,
+      outlineProperties: { summaryBelow: false, summaryRight: false },
+    },
+  });
+  ws.columns = [
+    { header: "ID", key: "id", width: 6 },
+    { header: "Eje", key: "eje", width: 24 },
+    { header: "Indicador", key: "nombre", width: 48 },
+    { header: "Aplica", key: "aplica", width: 10 },
+    { header: "Respuesta", key: "respuesta", width: 15 },
+    { header: "Criterio Bajo", key: "bajo", width: 45, outlineLevel: 1, hidden: true },
+    { header: "Criterio Medio", key: "medio", width: 45, outlineLevel: 1, hidden: true },
+    { header: "Criterio Alto", key: "alto", width: 45, outlineLevel: 1, hidden: true },
+  ];
+  styleHeaderRow(ws.getRow(1), [4, 5]);
+
+  for (const it of items) {
+    const isOptional = it.obligatorio === false;
+    const row = ws.addRow({
+      id: Number(it.id),
+      eje: it.eje,
+      nombre: isOptional ? `${it.nombre} (adicional)` : it.nombre,
+      aplica: "Sí",
+      respuesta: "",
+      bajo: it.niveles?.basica ?? "",
+      medio: it.niveles?.transversal ?? "",
+      alto: it.niveles?.sistema ?? "",
+    });
+    row.eachCell({ includeEmpty: true }, (cell) => {
+      cell.alignment = { vertical: "top", wrapText: true };
+      cell.border = thinBorder();
+    });
+    row.getCell(1).font = { color: { argb: COLOR.muted } };
+    row.getCell(2).font = { bold: true, color: { argb: argb(ejeColors[it.eje] ?? "#087F78") } };
+    for (const col of [4, 5]) {
+      row.getCell(col).fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR.editable } };
+    }
+    row.getCell(4).dataValidation = {
+      type: "list",
+      allowBlank: false,
+      formulae: [isOptional ? '"Sí,No"' : '"Sí"'],
+      showErrorMessage: true,
+      errorTitle: "Valor no válido",
+      error: isOptional ? "Seleccione Sí o No." : "Este indicador es obligatorio: siempre aplica.",
+    };
+    row.getCell(5).dataValidation = {
+      type: "list",
+      allowBlank: true,
+      formulae: ['"Bajo,Medio,Alto"'],
+      showErrorMessage: true,
+      errorTitle: "Valor no válido",
+      error: "Seleccione Bajo, Medio o Alto.",
+    };
+  }
+
+  const meta = wb.addWorksheet("_meta", { state: "veryHidden" });
+  meta.addRows([
+    ["formato", BACKUP_FORMAT],
+    ["version_formato", BACKUP_FORMAT_VERSION],
+    ["instrumento", instrumentFingerprint(items)],
+    ["unidad", ""],
+    ["fecha", now.toISOString()],
+    ["tipo", "plantilla"],
+  ]);
+
+  const buffer = await wb.xlsx.writeBuffer();
+  saveBlob(
+    new Blob([buffer], { type: XLSX_MIME }),
+    "plantilla-diagnostico-internacionalizacion.xlsx"
+  );
+}
+
 // ---------------------------------------------------------------- Importar
 
 function readMeta(wb) {
@@ -500,6 +611,7 @@ export async function readAnswersExcel(file, items) {
 
   return {
     fileName: file.name,
+    isTemplate: meta?.tipo === "plantilla",
     unidad: meta?.unidad ?? "",
     fecha: meta?.fecha ? new Date(meta.fecha) : null,
     answers,
