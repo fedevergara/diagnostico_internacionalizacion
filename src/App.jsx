@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
 import RadarEje from "./components/RadarEje";
+import ImportDialog from "./components/ImportDialog";
 import { hexToRgba } from "./lib/radar";
 import shieldUrl from "./assets/udea-shield-white.png";
 import "./App.css";
@@ -173,6 +174,10 @@ function groupItems(itemsToGroup) {
 
 const diagnosticTree = groupItems(items);
 
+const ALL_EJES = Array.from(diagnosticTree.keys()).sort(
+  (a, b) => EJE_ORDER.indexOf(a) - EJE_ORDER.indexOf(b)
+);
+
 function Indicator({
   it,
   value,
@@ -238,7 +243,12 @@ export default function App() {
   const [initialSession] = useState(loadInitialSession);
   const [tab, setTab] = useState("diagnostico");
   const [unidad, setUnidad] = useState(initialSession.unidad);
-  const [pdfStatus, setPdfStatus] = useState("idle"); // idle | working | error
+  // { status: "idle" | "working" | "error", failed?: string[] }
+  const [downloadState, setDownloadState] = useState({ status: "idle" });
+  const [importBusy, setImportBusy] = useState(false);
+  const [importPreview, setImportPreview] = useState(null);
+  const [importMessage, setImportMessage] = useState(null);
+  const importInputRef = useRef(null);
   const [notApplicableIds, setNotApplicableIds] = useState(
     initialSession.notApplicableIds
   );
@@ -333,32 +343,109 @@ export default function App() {
     });
   }, [resultsTree]);
 
-  const downloadPdf = async () => {
-    if (pdfStatus === "working") return;
-    setPdfStatus("working");
+  const nivelLabel = NIVEL_LABELS[stats.nivel] ?? stats.nivel;
 
+  const exportPdf = async () => {
+    const { generateDiagnosticPdf } = await import("./lib/pdfReport");
+    await generateDiagnosticPdf({
+      unidad,
+      stats,
+      nivelLabel,
+      textoNivel,
+      ejes: orderedEjes.map(([eje, byObj]) => ({
+        eje,
+        color: EJE_COLORS[eje] ?? "#087f78",
+        indicators: Array.from(byObj.values()).flat(),
+        allIndicators: Array.from(diagnosticTree.get(eje)?.values() ?? []).flat(),
+      })),
+      answers,
+      notApplicableIds,
+    });
+  };
+
+  const exportExcel = async () => {
+    const { downloadAnswersExcel } = await import("./lib/excelBackup");
+    await downloadAnswersExcel({
+      unidad,
+      items,
+      ejes: ALL_EJES,
+      ejeColors: EJE_COLORS,
+      answers,
+      notApplicableIds,
+      stats,
+      nivelLabel,
+    });
+  };
+
+  const runDownloads = async (kinds) => {
+    if (downloadState.status === "working") return;
+    setDownloadState({ status: "working", kinds });
+    const failed = [];
+
+    if (kinds.includes("pdf")) {
+      try {
+        await exportPdf();
+      } catch (error) {
+        console.error("No se pudo generar el PDF", error);
+        failed.push("PDF");
+      }
+    }
+    if (kinds.includes("excel")) {
+      // Pequeña pausa para que el navegador no descarte la segunda descarga.
+      if (kinds.includes("pdf")) await new Promise((r) => setTimeout(r, 400));
+      try {
+        await exportExcel();
+      } catch (error) {
+        console.error("No se pudo generar el Excel", error);
+        failed.push("Excel");
+      }
+    }
+
+    setDownloadState(failed.length ? { status: "error", failed } : { status: "idle" });
+  };
+
+  const onImportFile = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImportBusy(true);
+    setImportMessage(null);
     try {
-      const { generateDiagnosticPdf } = await import("./lib/pdfReport");
-      await generateDiagnosticPdf({
-        unidad,
-        stats,
-        nivelLabel: NIVEL_LABELS[stats.nivel] ?? stats.nivel,
-        textoNivel,
-        ejes: orderedEjes.map(([eje, byObj]) => ({
-          eje,
-          color: EJE_COLORS[eje] ?? "#01602D",
-          indicators: Array.from(byObj.values()).flat(),
-          allIndicators: Array.from(diagnosticTree.get(eje)?.values() ?? []).flat(),
-        })),
-        answers,
-        notApplicableIds,
-      });
-      setPdfStatus("idle");
+      const { readAnswersExcel } = await import("./lib/excelBackup");
+      setImportPreview(await readAnswersExcel(file, items));
     } catch (error) {
-      console.error("No se pudo generar el PDF", error);
-      setPdfStatus("error");
+      console.error("No se pudo cargar el Excel", error);
+      setImportMessage({
+        type: "error",
+        text:
+          error?.name === "BackupError"
+            ? error.message
+            : "No se pudo cargar el archivo. Recarga la página e inténtalo de nuevo.",
+        details: error?.details ?? [],
+      });
+    } finally {
+      setImportBusy(false);
     }
   };
+
+  const confirmImport = (targetUnit) => {
+    const data = importPreview;
+    setUnidad(targetUnit);
+    setAnswers({ ...createEmptyAnswers(), ...data.answers });
+    setNotApplicableIds(new Set(data.notApplicableIds));
+    setImportPreview(null);
+    setTab("resultados");
+    setImportMessage({
+      type: "success",
+      text: `Se cargaron las respuestas de «${data.fileName}» en ${targetUnit}.`,
+      details: [],
+    });
+  };
+
+  const cancelImport = useCallback(() => setImportPreview(null), []);
+
+  const isDownloading = downloadState.status === "working";
 
   const scrollToDiagnosticoTop = () => {
     const anchor = document.getElementById("diagnostico-top");
@@ -432,6 +519,22 @@ export default function App() {
             </button>
           </div>
           <button
+            type="button"
+            className="ghost-button"
+            onClick={() => importInputRef.current?.click()}
+            disabled={importBusy}
+            title="Recupera un diagnóstico a partir del Excel de respuestas descargado"
+          >
+            {importBusy ? "Leyendo Excel…" : "Cargar Excel"}
+          </button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            onChange={onImportFile}
+            hidden
+          />
+          <button
             onClick={clearProgress}
             disabled={!unidad || !hasProgress}
             className="ghost-button danger"
@@ -477,6 +580,35 @@ export default function App() {
           </span>
         </article>
       </section>
+
+      {importMessage && (
+        <div
+          className={`info-strip ${importMessage.type === "error" ? "is-error" : "is-success"}`}
+          role={importMessage.type === "error" ? "alert" : "status"}
+        >
+          <div className="strip-body">
+            <span>{importMessage.text}</span>
+            {importMessage.details.length > 0 && (
+              <ul>
+                {importMessage.details.slice(0, 6).map((detail) => (
+                  <li key={detail}>{detail}</li>
+                ))}
+                {importMessage.details.length > 6 && (
+                  <li>… y {importMessage.details.length - 6} más.</li>
+                )}
+              </ul>
+            )}
+          </div>
+          <button
+            type="button"
+            className="strip-close"
+            aria-label="Cerrar mensaje"
+            onClick={() => setImportMessage(null)}
+          >
+            ×
+          </button>
+        </div>
+      )}
 
       {unidad ? (
         <div className="info-strip">
@@ -572,19 +704,37 @@ export default function App() {
               </div>
               <div className="download-row">
                 <button
-                  onClick={downloadPdf}
+                  onClick={() => runDownloads(["pdf", "excel"])}
                   className="primary-button"
                   type="button"
-                  disabled={pdfStatus === "working"}
+                  disabled={isDownloading}
                 >
-                  {pdfStatus === "working" ? "Generando PDF…" : "Descargar diagnóstico"}
+                  {isDownloading && downloadState.kinds.includes("pdf")
+                    ? "Generando archivos…"
+                    : "Descargar diagnóstico"}
+                </button>
+                <button
+                  onClick={() => runDownloads(["excel"])}
+                  className="ghost-button"
+                  type="button"
+                  disabled={isDownloading}
+                >
+                  Descargar Excel
                 </button>
               </div>
             </div>
-            {pdfStatus === "error" && (
+            <p className="download-hint">
+              «Descargar diagnóstico» genera el PDF con los resultados y un Excel
+              con todas las respuestas. Guarde el Excel como respaldo: con
+              «Cargar Excel» puede recuperar o recrear este diagnóstico en
+              cualquier navegador o equipo, continuarlo más adelante o compartirlo
+              con su equipo. Si su navegador bloquea la segunda descarga, use
+              «Descargar Excel».
+            </p>
+            {downloadState.status === "error" && (
               <p className="download-error" role="alert">
-                No se pudo generar el PDF. Recarga la página e inténtalo de
-                nuevo; tus respuestas están guardadas.
+                No se pudo generar: {downloadState.failed.join(" y ")}. Recarga la
+                página e inténtalo de nuevo; tus respuestas están guardadas.
               </p>
             )}
             <div className="nivel-copy">{textoNivel}</div>
@@ -611,6 +761,19 @@ export default function App() {
             })}
           </div>
         </section>
+      )}
+
+      {importPreview && (
+        <ImportDialog
+          data={importPreview}
+          unidades={UNIDADES}
+          currentUnit={unidad}
+          countStoredAnswers={(unit) =>
+            Object.values(loadUnitProgress(unit).answers).filter((v) => v > 0).length
+          }
+          onConfirm={confirmImport}
+          onCancel={cancelImport}
+        />
       )}
     </div>
   );

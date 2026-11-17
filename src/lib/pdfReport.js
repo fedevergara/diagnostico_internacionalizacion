@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import shieldDataUrl from "../assets/udea-shield-white.png?inline";
 import { buildRadarConfig, summarizeIndicators } from "./radar";
+import { baseFileName } from "./files";
 
 Chart.register(RadarController, RadialLinearScale, PointElement, LineElement, Filler);
 
@@ -51,15 +52,6 @@ function mixWithWhite(hex, ratio) {
       .padStart(2, "0");
   };
   return `#${channel(16)}${channel(8)}${channel(0)}`;
-}
-
-function slugify(text) {
-  return text
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 }
 
 function renderRadarImage({ titulo, indicators, answers, color }) {
@@ -497,5 +489,5 @@ export async function generateDiagnosticPdf({
   }
 
   w.footers();
-  w.doc.save(`diagnostico-internacionalizacion-${slugify(unidad)}.pdf`);
+  w.doc.save(`${baseFileName(unidad)}.pdf`);
 }
