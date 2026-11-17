@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import html2pdf from "html2pdf.js";
 import raw from "./data/diagnostico.json";
 import { normalizeItems } from "./lib/normalize";
 import RadarEje from "./components/RadarEje";
@@ -25,6 +24,13 @@ const EJE_COLORS = {
   Movilidad: "#752157",
   "Gestión de Capacidades": "#007297",
   "Gestión Administrativa": "#F5333F",
+};
+
+const NIVEL_LABELS = {
+  basica: "Básico",
+  transversal: "Transversal",
+  sistema: "Sistémico",
+  pendiente: "Pendiente",
 };
 
 const STORAGE_KEY = "diagnostico-internacionalizacion";
@@ -230,7 +236,7 @@ export default function App() {
   const [initialSession] = useState(loadInitialSession);
   const [tab, setTab] = useState("diagnostico");
   const [unidad, setUnidad] = useState(initialSession.unidad);
-  const [isPdfExporting, setIsPdfExporting] = useState(false);
+  const [pdfStatus, setPdfStatus] = useState("idle"); // idle | working | error
   const [notApplicableIds, setNotApplicableIds] = useState(
     initialSession.notApplicableIds
   );
@@ -326,31 +332,29 @@ export default function App() {
   }, [resultsTree]);
 
   const downloadPdf = async () => {
-    if (tab !== "resultados") setTab("resultados");
-
-    await new Promise((r) => setTimeout(r, 0));
-
-    const element = document.getElementById("pdf");
-    if (!element) return;
-
-    setIsPdfExporting(true);
-    await new Promise((r) => setTimeout(r, 220));
-    window.dispatchEvent(new Event("resize"));
-    await new Promise((r) => setTimeout(r, 220));
+    if (pdfStatus === "working") return;
+    setPdfStatus("working");
 
     try {
-      await html2pdf()
-        .from(element)
-        .set({
-          filename: "diagnostico-internacionalizacion.pdf",
-          margin: 10,
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-          pagebreak: { mode: ["css", "legacy"] },
-        })
-        .save();
-    } finally {
-      setIsPdfExporting(false);
+      const { generateDiagnosticPdf } = await import("./lib/pdfReport");
+      await generateDiagnosticPdf({
+        unidad,
+        stats,
+        nivelLabel: NIVEL_LABELS[stats.nivel] ?? stats.nivel,
+        textoNivel,
+        ejes: orderedEjes.map(([eje, byObj]) => ({
+          eje,
+          color: EJE_COLORS[eje] ?? "#01602D",
+          indicators: Array.from(byObj.values()).flat(),
+          allIndicators: Array.from(diagnosticTree.get(eje)?.values() ?? []).flat(),
+        })),
+        answers,
+        notApplicableIds,
+      });
+      setPdfStatus("idle");
+    } catch (error) {
+      console.error("No se pudo generar el PDF", error);
+      setPdfStatus("error");
     }
   };
 
@@ -511,15 +515,12 @@ export default function App() {
 
       {tab === "resultados" && unidad && (
         <section className="results-view">
-          <div
-            id="pdf"
-            className={`pdf-area ${isPdfExporting ? "pdf-exporting" : ""}`}
-          >
+          <div id="pdf" className="pdf-area">
             <div className="pdf-header">
               <h2>Resultados del Diagnóstico</h2>
               <p>{unidad}</p>
               <p>
-                Respondidas: {stats.answered}/{stats.total} | Nivel: {stats.nivel}
+                Respondidas: {stats.answered}/{stats.total} | Nivel: {NIVEL_LABELS[stats.nivel]}
               </p>
             </div>
 
@@ -528,12 +529,6 @@ export default function App() {
             <div className="results-grid">
               {orderedEjes.map(([eje, byObj]) => {
                 const indicators = Array.from(byObj.values()).flat();
-                const summaryIndicators = Array.from(
-                  diagnosticTree.get(eje)?.values() ?? []
-                ).flat();
-                const radarKey = `radar-${eje}-${unidad}-${isPdfExporting ? "pdf" : "screen"}-${indicators
-                  .map((it) => it.id)
-                  .join("-")}`;
                 const ejeColor = EJE_COLORS[eje] ?? "#01602D";
 
                 return (
@@ -542,14 +537,10 @@ export default function App() {
                     className={`radar-wrap ${indicators.length >= 15 ? "is-dense" : ""}`}
                   >
                     <RadarEje
-                      key={radarKey}
                       titulo={eje}
                       indicators={indicators}
-                      summaryIndicators={summaryIndicators}
                       answers={answers}
-                      notApplicableIds={notApplicableIds}
                       color={ejeColor}
-                      forPdf={isPdfExporting}
                     />
                   </div>
                 );
@@ -557,9 +548,22 @@ export default function App() {
             </div>
           </div>
 
-          <button onClick={downloadPdf} className="download-button" type="button">
-            Descargar diagnóstico
-          </button>
+          <div className="download-row">
+            <button
+              onClick={downloadPdf}
+              className="download-button"
+              type="button"
+              disabled={pdfStatus === "working"}
+            >
+              {pdfStatus === "working" ? "Generando PDF…" : "Descargar diagnóstico"}
+            </button>
+            {pdfStatus === "error" && (
+              <span className="download-error" role="alert">
+                No se pudo generar el PDF. Recarga la página e inténtalo de
+                nuevo; tus respuestas están guardadas.
+              </span>
+            )}
+          </div>
         </section>
       )}
     </div>
